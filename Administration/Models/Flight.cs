@@ -1,9 +1,8 @@
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
+using Database.DbObjects;
 
 namespace Administration.Models;
 
-public record Flight
+public record Flight : IPersistable
 {
     public string FlightNumber { get; private set; }
     public FlightConnection FlightConnection { get; private set; }
@@ -15,5 +14,10 @@ public record Flight
         FlightNumber = flightNumber;
         FlightConnection = flightConnection;
         Date = date;
+    }
+
+    public string GetPrimaryKey()
+    {
+        return FlightNumber;
     }
 }

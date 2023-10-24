@@ -1,6 +1,8 @@
+using Database.DbObjects;
+
 namespace Administration.Models;
 
-public record Airline
+public record Airline : IPersistable
 {
     public string AirlineCode { get; private set; }
     public string Name { get; private set; }
@@ -13,5 +15,10 @@ public record Airline
         Name = name;
         Country = country;
         Currency = currency;
+    }
+
+    public string GetPrimaryKey()
+    {
+        return AirlineCode;
     }
 }
