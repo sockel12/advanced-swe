@@ -8,13 +8,14 @@ public class OdbcDatabaseConnection(string connectionString) : IDatabaseConnecti
 
     public int Query(Query query)
     {
-        OdbcCommand odbcCommand = query.GetOdbcCommand();
-        using (_connection)
-        {
-            odbcCommand.Connection = _connection;
-            _connection.Open();
-            OdbcDataReader result = odbcCommand.ExecuteReader();
-            return result.RecordsAffected;
-        }
+        // OdbcCommand odbcCommand = query.GetOdbcCommand();}
+        // using (_connection)
+        // {
+        //     odbcCommand.Connection = _connection;
+        //     _connection.Open();
+        //     OdbcDataReader result = odbcCommand.ExecuteReader();
+        //     return result.RecordsAffected;
+        // }
+        return 0;
     }
 }

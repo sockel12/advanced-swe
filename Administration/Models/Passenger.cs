@@ -2,8 +2,9 @@ using Database.DbObjects;
 
 namespace Administration.Models;
 
-public record Customer : IPersistable
+public record Passenger : IPersistable
 {
+    [PrimaryKey]
     public string Id { get; private set; }
     public string Name { get; private set; }
     public string Email { get; private set; }
@@ -13,7 +14,7 @@ public record Customer : IPersistable
     public string Country { get; private set; }
     
     
-    public Customer(string id, string name, string email, string address, string city, string zipCode, string country)
+    public Passenger(string id, string name, string email, string address, string city, string zipCode, string country)
     {
         Id = id;
         Name = name;
@@ -22,10 +23,5 @@ public record Customer : IPersistable
         City = city;
         ZipCode = zipCode;
         Country = country;
-    }
-
-    public string GetPrimaryKey()
-    {
-        return Id;
     }
 }

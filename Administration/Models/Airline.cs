@@ -4,6 +4,7 @@ namespace Administration.Models;
 
 public record Airline : IPersistable
 {
+    [PrimaryKey]
     public string AirlineCode { get; private set; }
     public string Name { get; private set; }
     public string Country { get; private set; }
@@ -15,10 +16,5 @@ public record Airline : IPersistable
         Name = name;
         Country = country;
         Currency = currency;
-    }
-
-    public string GetPrimaryKey()
-    {
-        return AirlineCode;
     }
 }

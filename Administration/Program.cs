@@ -21,13 +21,7 @@ if (app.Environment.IsDevelopment())
 
 
 
-app.MapGet("/airports", () =>
-    {
-        return new Airport[]{
-            new Airport("EDDH"),
-            new Airport("EDDL")
-        };
-    })
+app.MapGet("/airports", () => "Test")
     .WithName("Get all airports")
     .WithOpenApi();
 
