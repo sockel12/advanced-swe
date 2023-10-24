@@ -1,6 +1,6 @@
 namespace Database.DbObjects;
 
-public class Entity<T>
+public class Association<T>
     (string id)
     where T : IPersistable
 {
