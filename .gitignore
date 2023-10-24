@@ -18,6 +18,7 @@ mono_crash.*
 
 # MacOS files
 .DS_Store
+.idea/
 
 # Database files
 db
