@@ -1,4 +1,5 @@
 using System.Data.Odbc;
+using IQueryable = Database.Queries.IQueryable;
 
 namespace Database;
 
@@ -6,9 +7,9 @@ public class OdbcDatabaseConnection(string connectionString) : IDatabaseConnecti
 {
     private readonly OdbcConnection _connection = new(connectionString);
 
-    public int Query(Query query)
+    public int Query(IQueryable query)
     {
-        OdbcCommand odbcCommand = query.GetOdbcCommand();
+        OdbcCommand odbcCommand = new(query.GetQuery());
         using (_connection)
         {
             odbcCommand.Connection = _connection;

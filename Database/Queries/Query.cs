@@ -1,14 +1,11 @@
-using System.Collections.Immutable;
-using System.Data.Odbc;
+using IQueryable = Database.Queries.IQueryable;
 
 namespace Database;
 
-
-// SELECT-QUERY | INSERT | UPDATE |
-// FROM | INTO  SELECT("").FROM(Customer).Join()
-// Q
-// SELECT("").FROM(this.class)
-public class Query()
+public class Query(string query) : IQueryable
 {
-    
+    public string GetQuery()
+    {
+        return query;
+    }
 }

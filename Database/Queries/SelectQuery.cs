@@ -1,6 +1,12 @@
-namespace Database;
+using Database.DbObjects;
+using IQueryable = Database.Queries.IQueryable;
 
-public class SelectQuery
+namespace Database.Queries;
+
+public class SelectQuery(IPersistable entity) : IQueryable
 {
-    
+    public string GetQuery()
+    {
+        return String.Format("SELECT * FROM {}", entity.GetType().Name);
+    }
 }

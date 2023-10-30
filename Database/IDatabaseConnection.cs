@@ -1,6 +1,8 @@
+using IQueryable = Database.Queries.IQueryable;
+
 namespace Database;
 
 public interface IDatabaseConnection
 {
-    public int Query(Query query);
+    public int Query(IQueryable query);
 }
