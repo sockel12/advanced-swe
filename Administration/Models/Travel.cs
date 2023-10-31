@@ -22,9 +22,8 @@ public record Travel : IPersistable
     public string Id { get; private set; }
     public DateOnly BeginDate { get; private set; }
     public DateOnly EndDate { get; private set; }
-    public decimal BookingFee { get; private set; }
-    public decimal TotalPrice { get; private set; }
-    public Association<Currency> Currency { get; private set; }
+    public Association<MoneyAmount> BookingFee { get; private set; }
+    public Association<MoneyAmount> TotalPrice { get; private set; }
     public string Description { get; private set; }
     public Association<TravelStatus> TravelStatus { get; private set; }
     public Association<TravelAgency> Agency { get; private set; }
