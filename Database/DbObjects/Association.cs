@@ -1,10 +1,10 @@
 namespace Database.DbObjects;
 
 public class Association<T>
-    (string id)
+    (string[] idStrings)
     where T : IPersistable
 {
-    public readonly string Id = id;
+    private T[] _instances = new T [idStrings.Length];
+    public readonly string[] Id = idStrings;
     public bool IsRead { get; private set; } = false;
-    public T Instance { get; private set; }
 }
