@@ -18,9 +18,4 @@
         <Link>.dockerignore</Link>
       </Content>
     </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Database\Database.csproj" />
-    </ItemGroup>
-
 </Project>

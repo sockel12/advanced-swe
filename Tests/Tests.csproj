@@ -23,7 +23,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Administration\Administration.csproj" />
-      <ProjectReference Include="..\Database\Database.csproj" />
     </ItemGroup>
 
 </Project>
