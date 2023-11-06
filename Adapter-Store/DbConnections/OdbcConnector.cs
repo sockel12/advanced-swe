@@ -12,8 +12,14 @@ public class OdbcConnector(string connectionString) : IDbConnector
     /// <returns>Open Odbc Connection</returns>
     public IDbConnection GetConnection()
     {
-       return new DbOdbcConnection(
-        new OdbcConnection(ConnectionString)
-       );
+    //    return new DbOdbcConnection(
+    //     new OdbcConnection(ConnectionString)
+    //    );
+        return null;
+    }
+
+    DbConnection IDbConnector.GetConnection()
+    {
+        throw new NotImplementedException();
     }
 }

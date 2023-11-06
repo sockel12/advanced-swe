@@ -1,29 +1,21 @@
 using System.Data.Odbc;
+using Adapter_Store.StoreObjects;
 
-class DbOdbcConnection : IDbConnection
+class DbOdbcConnection : DbConnection
 {
     private readonly OdbcConnection _odbcConnection;
     public DbOdbcConnection(OdbcConnection odbcConnection){
         _odbcConnection = odbcConnection;
         _odbcConnection.Open();
     }
-    public void Dispose()
+
+    protected override void CallDialect()
     {
-        _odbcConnection.Dispose();
+        Driver<NHibernate.Driver.OdbcDriver>();
     }
 
-    public QueryResult<T> Query<T>(Query<T> query)
+    protected override void CallDriver()
     {
-        OdbcCommand command = _odbcConnection.CreateCommand();
-        command.CommandText = query.GetCmd();
-        command.CommandType = System.Data.CommandType.Text;
-        
-        OdbcDataReader reader = command.ExecuteReader();
-        QueryResult<T> result = new QueryResult<T>();
-
-        while(reader.Read()){
-            result.AddRecord(reader[0].ToString() ?? "Fail");
-        }
-        return result;
+        Dialect<NHibernate.Dialect.MySQLDialect>();
     }
 }

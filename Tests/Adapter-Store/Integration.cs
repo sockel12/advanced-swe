@@ -17,7 +17,7 @@ public class Integration
     [Test]
     public void Test1()
     {
-        odbcController.Query();
+        odbcController.QueryAll();
         Assert.Pass("Is Queryable");
     }
 }
