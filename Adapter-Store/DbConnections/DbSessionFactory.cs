@@ -3,6 +3,7 @@ using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using NHibernate.Cfg;
+using NHibernate.Tool.hbm2ddl;
 
 namespace Adapter_Store.DbConnections;
 
@@ -17,8 +18,8 @@ public class DbSessionFactory
                 .Driver<NHibernate.Driver.OdbcDriver>()
                 .Dialect<NHibernate.Dialect.MySQLDialect>()
             )
-            .Mappings(
-                m => m.FluentMappings.AddFromAssemblyOf<FlightMap>()
-            ).BuildSessionFactory();
+            .Mappings(m => m.FluentMappings.AddFromAssemblyOf<FlightMap>())
+            .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true))
+            .BuildSessionFactory();
     }
 }

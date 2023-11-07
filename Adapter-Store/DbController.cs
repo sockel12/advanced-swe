@@ -19,7 +19,7 @@ public class DbController
     public IList<Flight> QueryAll(){
         using(var session = _factory.OpenSession()){
             using(var transaction = session.BeginTransaction()){
-                var Flight = new Flight(){ Id = new Guid(), Connection = new Guid() };
+                var Flight = new Flight(){ Id = "1", Connection = "1" };
                 session.SaveOrUpdate(Flight);
                 transaction.Commit();
             }
