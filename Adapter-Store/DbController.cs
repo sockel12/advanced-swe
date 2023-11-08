@@ -6,14 +6,20 @@ namespace Adapter_Store;
 
 public class DbController
 {
-    private readonly IDbConnector _dbConnector;
-    private readonly ISessionFactory _factory;
+    protected IDbConnector _dbConnector;
+    protected ISessionFactory _factory;
 
     public DbController(IDbConnector connector){
         _dbConnector = connector;
         _factory = new DbSessionFactory().CreateSessionFactory();
 
         
+    }
+
+    public IList<T> QueryAll<T>(){
+        using(var session = _factory.OpenSession()){
+            return session.CreateCriteria(typeof(T)).List<T>();
+        }
     }
 
     public IList<Flight> QueryAll(){

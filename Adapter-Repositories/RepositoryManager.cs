@@ -1,21 +1,17 @@
 namespace Adapter_Respositories;
 
-class RepositoryManager
+public class RepositoryManager
 {
-    protected Dictionary<string, Repository<IDomain>> _repositories = new();
-    protected RepositoryFactory _repoFactory = new();
+    protected Dictionary<Type, object> _repositories = new();
 
-    public Repository<IDomain>  GetRepository(string className){
-        if(!_repositories.ContainsKey(className)){
+    public Repository<T> GetRepository<T>(){
+        Type type = typeof(T);
+        if(!_repositories.ContainsKey(type)){
             _repositories.Add(
-                className,
-                _repoFactory.GetRepository(className)
+                type,
+                new Repository<T>()
             );
         }
-        return _repositories[className];
+        return _repositories[type] as Repository<T>;
     }
-}
-
-internal interface IDomain{
-
 }

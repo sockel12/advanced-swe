@@ -1,23 +1,29 @@
 using Adapter_Store;
 using Adapter_Store.DbConnections;
+using Moq;
+using NHibernate;
 
 namespace Tests;
 
-public class Integration
+public class Integration : DbController
 {
-    private DbController odbcController;
+    public Integration() : base(new OdbcConnector("DSN=mysql")) {}
     [SetUp]
     public void Setup()
     {
-        odbcController = new DbController(
-            new OdbcConnector("DSN=mysql")
-        );
+        var factoryMock = new Mock<ISessionFactory>();
+        factoryMock.Setup(x => x.OpenSession()).Returns(new Mock<ISession>().Object);
     }
 
     [Test]
     public void Test1()
     {
-        odbcController.QueryAll();
+        QueryAll();
         Assert.Pass("Is Queryable");
+    }
+
+    [Test]
+    public void MockTest(){
+        
     }
 }
