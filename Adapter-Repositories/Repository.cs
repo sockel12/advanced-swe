@@ -10,6 +10,11 @@ public class Repository<T>(IDatabase database) : IRepository<T>
     private Dictionary<object, T> _values = new ();
     private IDatabase _databaseController = database;
 
+    public void Accept(IRepositoryVisitor<T> visitor)
+    {
+        visitor.Visit(this);
+    }
+
     public bool Add(T value)
     {
         return _values.TryAdd(value.GetId(), value);
@@ -25,7 +30,7 @@ public class Repository<T>(IDatabase database) : IRepository<T>
         return _values.Values.ToList();
     }
 
-    public bool Update(object key, T value)
+    public bool Update(T value)
     {
         if (!_values.ContainsKey(value.GetId())) return false;
         
