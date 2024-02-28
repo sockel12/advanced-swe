@@ -6,7 +6,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -20,6 +19,8 @@ var summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
+
+
 
 app.MapGet("/weatherforecast", () =>
     {
@@ -36,6 +37,12 @@ app.MapGet("/weatherforecast", () =>
     .WithName("GetWeatherForecast")
     .WithOpenApi();
 
+app.MapGet("/entities/{entity}/{id}", (string entity, int id) =>
+    {
+        
+    })
+    .WithName("GetEntities")
+    .WithOpenApi();
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
