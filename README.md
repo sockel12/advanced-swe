@@ -43,3 +43,7 @@ Manager (Benjamin)
 - Flights -> Beziehungen als Objekte
 - Carrier
 - Connection
+
+# Code Smell
+## Repository
+Should IRepository extend ICollection or IEnumerator?

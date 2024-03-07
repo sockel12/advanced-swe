@@ -1,46 +1,29 @@
-using System.Net.Sockets;
+using System.Collections;
 using Application_Code.Interfaces;
 using Domain_Code;
+using NotImplementedException = System.NotImplementedException;
 
 namespace Adapter_Repositories;
 
-public class Repository<T>(IDatabase database) : IRepository<T>
+public class Repository<T>(IEnumerable<IRepository<T>> Repositories) : IRepository<T>
     where T : IIdentifiable
 {
-    private Dictionary<object, T> _values = new ();
-    private IDatabase _databaseController = database;
-
+    public int Count { get; private set; } = Repositories.Count();
+    public bool IsReadOnly => false;
+    private int _currentRepo = 0;
+    
     public void Accept(IRepositoryVisitor<T> visitor)
     {
         visitor.Visit(this);
     }
 
-    public bool Add(T value)
+    public IEnumerator<T> GetEnumerator()
     {
-        return _values.TryAdd(value.GetId(), value);
+        return Repositories.Aggregate(Enumerable.Empty<T>(), (list, repository) => list.Concat(repository)).GetEnumerator();
     }
 
-    public T? Get(object key)
+    IEnumerator IEnumerable.GetEnumerator()
     {
-        return _values.GetValueOrDefault(key);
-    }
-
-    public List<T> GetAll()
-    {
-        return _values.Values.ToList();
-    }
-
-    public bool Update(T value)
-    {
-        if (!_values.ContainsKey(value.GetId())) return false;
-        
-        _values.Remove(value.GetId());
-        _values.Add(value.GetId(), value);
-        return true;
-    }
-
-    public bool Delete(object key)
-    {
-        return _values.Remove(key);
+        return GetEnumerator();
     }
 }

@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application-Code", "Applica
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adapter-Repositories", "Adapter-Repositories\Adapter-Repositories.csproj", "{6877CB56-F507-4FF4-B597-6EC8CB5F0D40}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adapter-Store-CSV", "Adapter-Store-CSV\Adapter-Store-CSV.csproj", "{B2509ECC-29DA-4E62-8F18-4F71B874621E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,5 +49,9 @@ Global
 		{6877CB56-F507-4FF4-B597-6EC8CB5F0D40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6877CB56-F507-4FF4-B597-6EC8CB5F0D40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6877CB56-F507-4FF4-B597-6EC8CB5F0D40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2509ECC-29DA-4E62-8F18-4F71B874621E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2509ECC-29DA-4E62-8F18-4F71B874621E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2509ECC-29DA-4E62-8F18-4F71B874621E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2509ECC-29DA-4E62-8F18-4F71B874621E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

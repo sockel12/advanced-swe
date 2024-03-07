@@ -9,7 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IDatabase, DbController>();
 builder.Services.AddSingleton<IEntityManager, EntityManager>();
 
 var app = builder.Build();

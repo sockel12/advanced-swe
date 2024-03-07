@@ -1,12 +1,13 @@
 using Adapter_Repositories;
 using Adapter_Store.DbConnections;
 using Adapter_Store.TestObjects;
+using Application_Code.Interfaces;
 using Domain_Code;
 using NHibernate;
 
 namespace Adapter_Store;
 
-public class DbController(IDbConnector connector, ISessionFactory factory) : IDatabase
+public class DbController(IDbConnector connector, ISessionFactory factory)
 {
     protected IDbConnector DbConnector = connector;
     protected ISessionFactory Factory = factory; // new DbSessionFactory().CreateSessionFactory()
@@ -23,7 +24,7 @@ public class DbController(IDbConnector connector, ISessionFactory factory) : IDa
         return false;
     }
 
-    public bool Persist<T>(Repository<T> repository) where T : IIdentifiable
+    public bool Persist<T>(IRepository<T> repository) where T : IIdentifiable
     {
         using var session = Factory.OpenSession();
         ITransaction transaction = session.BeginTransaction();
@@ -32,12 +33,12 @@ public class DbController(IDbConnector connector, ISessionFactory factory) : IDa
         return true;
     }
 
-    public Repository<T> Load<T>(T obj) where T : IIdentifiable
+    public IRepository<T> Load<T>(T obj) where T : IIdentifiable
     {
         throw new NotImplementedException();
     }
 
-    public int[] Upsert<T>(Repository<T> repository) where T : IIdentifiable
+    public int[] Upsert<T>(IRepository<T> repository) where T : IIdentifiable
     {
         throw new NotImplementedException();
     }
