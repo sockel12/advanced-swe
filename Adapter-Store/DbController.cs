@@ -28,7 +28,10 @@ public class DbController(IDbConnector connector, ISessionFactory factory)
     {
         using var session = Factory.OpenSession();
         ITransaction transaction = session.BeginTransaction();
-        repository.GetAll().ForEach(identifiable => session.Persist(identifiable));
+        foreach (var identifiable in repository)
+        {
+            session.Persist(identifiable);
+        }
         transaction.Commit();
         return true;
     }

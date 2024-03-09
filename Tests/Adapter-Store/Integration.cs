@@ -9,7 +9,7 @@ namespace Tests.Adapter_Store;
 public class Integration
 {
     private DbController cut;
-    private Flight testFlight = new Flight() { FlightNumber = "1", Connection = new Connection() };
+    private Flight testFlight = new() { FlightNumber = new NumberKey(1), Connection = new Connection() };
     private List<Flight> returnFlights;
     [SetUp]
     public void Setup()

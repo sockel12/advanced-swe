@@ -14,14 +14,9 @@ public class EntityManager : IEntityManager
     {
         _factoriesFactories.Remove(factory);
     }
-    public void VisitRepository<T>(IRepositoryVisitor<T> visitor)
-        where T : IIdentifiable
-    {
-        IRepository<T> repository = GetRepository<T>();
-        repository.Accept(visitor);
-    }
     
-    private IRepository<T>? GetRepository<T>()
+    
+    public IRepository<T> GetRepository<T>()
         where T : IIdentifiable
     {
         return new Repository<T>(

@@ -2,8 +2,9 @@ using Domain_Code;
 
 namespace Application_Code.Interfaces;
 
-public interface IRepository<T> : IEnumerable<T>
+public interface IRepository<T> : ICollection<T>
     where T : IIdentifiable
 {
-    public void Accept(IRepositoryVisitor<T> visitor);
+    public bool Update(T item);
+    public T? Get(Key key);
 }

@@ -5,9 +5,9 @@ namespace Application_Code.Handler;
 
 public class ReservationHandler(IEntityManager entityManager)
 {
-    private readonly IRepository<Booking> _bookingRepository = new DomainVisitor<Booking>().GetRepository(entityManager);
-    private readonly IRepository<Reservation> _reservationRepository = new DomainVisitor<Reservation>().GetRepository(entityManager);
-    private readonly IRepository<Customer> _customerRepository = new DomainVisitor<Customer>().GetRepository(entityManager);
+    private readonly IRepository<Booking> _bookingRepository = entityManager.GetRepository<Booking>();
+    private readonly IRepository<Reservation> _reservationRepository = entityManager.GetRepository<Reservation>();
+    private readonly IRepository<Customer> _customerRepository = entityManager.GetRepository<Customer>();
     
     public Reservation ReserveBooking(Booking booking)
     {
@@ -25,9 +25,9 @@ public class ReservationHandler(IEntityManager entityManager)
         return reservation;
     }
 
-    public bool CancelReservation(string bookingNumber)
+    public bool CancelReservation(Booking booking)
     {
-        Reservation reservation = _reservationRepository.Get(bookingNumber);
+        Reservation? reservation = _reservationRepository.Get(booking.GetId());
         if (reservation == null) return false;
         reservation.ReservationStatus = ReservationStatus.CANCELED;
         return true;

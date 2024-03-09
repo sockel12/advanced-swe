@@ -2,7 +2,7 @@ namespace Domain_Code;
 
 public class Connection : IIdentifiable
 {
-    public string Id { get; set; }
+    public Key Id { get; set; }
     public Country CountryFrom { get; set; }
     public Country CountryTo { get; set; }
     public Airport AirportFrom { get; set; }
@@ -14,7 +14,7 @@ public class Connection : IIdentifiable
     public DistanceUnit DistanceUnit { get; set; }
     public int Period { get; set; }
     
-    public object GetId()
+    public Key GetId()
     {
         return Id;
     }
