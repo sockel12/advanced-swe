@@ -3,6 +3,7 @@ using Domain_Code;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +33,11 @@ namespace Tests.Adapter_Repositories
         }
 
         public void CopyTo(T[] array, int arrayIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ImmutableList<T> GetAll()
         {
             throw new NotImplementedException();
         }

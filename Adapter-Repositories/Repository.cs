@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Immutable;
 using Application_Code.Interfaces;
 using Domain_Code;
 using NotImplementedException = System.NotImplementedException;
@@ -50,6 +51,12 @@ public class Repository<T>(IEnumerable<IRepository<T>> Repositories) : IReposito
     #endregion ICollection
 
     public bool Update(T item) => Repositories.Any(repository => repository.Update(item));
+    public ImmutableList<T> GetAll()
+    {
+        return Repositories
+            .Aggregate(new List<T>(), (list, repository) => list.Concat(repository.GetAll()).ToList())
+            .ToImmutableList();
+    }
 
     public T? Get(Key key)
     {
