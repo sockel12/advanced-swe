@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Immutable;
 using System.Globalization;
+using Adapter_Repositories;
 using Application_Code.Interfaces;
+using AutoMapper;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Domain_Code;
@@ -29,14 +31,13 @@ public class Repository<T> : IRepository<T>
     public void Add(T item)
     {
         Records.Add(item);
-        using var writer = GetCsvWriter(DataCsvFile);
-        writer.WriteRecords(Records);
+        WriteCsv();
     }
 
     public void Clear()
     {
         Records.Clear();
-        GetCsvWriter(DataCsvFile).Flush();
+        WriteCsv();
     }
 
     public bool Contains(T item)
@@ -52,7 +53,7 @@ public class Repository<T> : IRepository<T>
     public bool Remove(T item)
     {
         var isRemoved = Records.Remove(item);
-        GetCsvWriter(DataCsvFile).WriteRecords(Records);
+        WriteCsv();
         return isRemoved;
     }
     
@@ -61,8 +62,10 @@ public class Repository<T> : IRepository<T>
     private static string BaseDir => @"/Users/I550939/Documents/Code/SWE/Adapter-Store-CSV/data";
     private string DataCsvFile { get; }
     private HashSet<T> Records { get; } = new();
-    public Repository()
+    private readonly IConverter _converter;
+    public Repository(IConverter converter)
     {
+        _converter = converter;
         var className = typeof(T).Name;
         DataCsvFile = Path.Join(BaseDir, className + ".csv");
 
@@ -71,13 +74,7 @@ public class Repository<T> : IRepository<T>
             File.Create(DataCsvFile);
         }
         
-        using var csvReader =  GetCsvReader(DataCsvFile);
-        foreach (var record in csvReader.GetRecords<T>())
-        {
-            Records.Add(record);
-        }
-
-        Count = Records.Count;
+        LoadCsv();
     }
 
     private CsvConfiguration DefaultConfig { get; } = new(CultureInfo.InvariantCulture)
@@ -85,23 +82,38 @@ public class Repository<T> : IRepository<T>
         NewLine = Environment.NewLine,
         Delimiter = ";"
     };
-    private CsvReader GetCsvReader(string path)
+    private void LoadCsv()
     {
-        var streamReader = new StreamReader(path);
-        return new CsvReader(streamReader, DefaultConfig);
+        using var streamReader = new StreamReader(DataCsvFile);
+        using var reader = new CsvReader(streamReader, DefaultConfig);
+        Records.Clear();
+        foreach (IDTO record in reader.GetRecords(_converter.GetIdtoType()))
+        {
+            Records.Add(
+                (T)_converter.ToDomain(record)
+            );
+        }
+
+        Count = Records.Count;
     }
 
-    private CsvWriter GetCsvWriter(string path)
+    private void WriteCsv()
     {
-        var streamWriter = new StreamWriter(path);
-        return new CsvWriter(streamWriter, DefaultConfig);
+        using var streamWriter = new StreamWriter(DataCsvFile);
+        using var writer = new CsvWriter(streamWriter, DefaultConfig);
+        foreach (var record in Records)
+        {
+            writer.WriteRecord(
+                _converter.FromDomain(record)
+            );
+        }
     }
 
     public bool Update(T item)
     {
         var isSuccess = Records.Remove(item);
         isSuccess &= Records.Add(item);
-        GetCsvWriter(DataCsvFile).WriteRecords(Records);
+        WriteCsv();
         return isSuccess;
     }
 

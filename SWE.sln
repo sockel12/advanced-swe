@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain-Code", "Domain-Code\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application-Code", "Application-Code\Application-Code.csproj", "{E5FBE8F3-6EEC-4026-AC74-CAF3DED3AA3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adapter-Repositories", "Adapter-Repositories\Adapter-Repositories.csproj", "{6877CB56-F507-4FF4-B597-6EC8CB5F0D40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application-Repositories", "Application-Repositories\Application-Repositories.csproj", "{6877CB56-F507-4FF4-B597-6EC8CB5F0D40}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adapter-Store-CSV", "Adapter-Store-CSV\Adapter-Store-CSV.csproj", "{B2509ECC-29DA-4E62-8F18-4F71B874621E}"
 EndProject

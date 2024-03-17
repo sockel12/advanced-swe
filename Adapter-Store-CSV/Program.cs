@@ -1,4 +1,3 @@
-using Application_Code.Interfaces;
 using Domain_Code;
 
 namespace Adapter_Store_CSV;
@@ -7,14 +6,15 @@ public class Program
 {
     public static void Main()
     {
-        IRepository<Customer> repository = new Repository<Customer>();
-        Customer customer = new()
+        CsvRepositoryFactory factory = new();
+        var repo = factory.GetRepository<Customer>();
+        Customer c = new Customer()
         {
             Id = new Key("1"),
-            FirstName = "Banjamin",
-            LastName = "Appel",
-            PassportNumber = "1234-5678-9101"
+            FirstName = "Niklas",
+            LastName = "Haas",
+            PassportNumber = "000000000"
         };
-        repository.Add(customer);
+        repo.Add(c);
     }
 }

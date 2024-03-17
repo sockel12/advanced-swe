@@ -8,12 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Adapter-Repositories\Adapter-Repositories.csproj" />
+      <ProjectReference Include="..\Application-Repositories\Application-Repositories.csproj" />
       <ProjectReference Include="..\Application-Code\Application-Code.csproj" />
       <ProjectReference Include="..\Domain-Code\Domain-Code.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="13.0.1" />
       <PackageReference Include="CsvHelper" Version="31.0.0" />
     </ItemGroup>
 

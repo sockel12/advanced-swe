@@ -20,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Adapter-Repositories\Adapter-Repositories.csproj" />
+      <ProjectReference Include="..\Application-Repositories\Application-Repositories.csproj" />
       <ProjectReference Include="..\Adapter-Store-CSV\Adapter-Store-CSV.csproj" />
       <ProjectReference Include="..\Adapter-Store\Adapter-Store.csproj" />
       <ProjectReference Include="..\Application-Code\Application-Code.csproj" />
