@@ -7,4 +7,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="FluentNHibernate" Version="3.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+    <PackageReference Include="System.Data.Odbc" Version="8.0.0-rc.2.23479.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application-Repositories\Application-Repositories.csproj" />
+  </ItemGroup>
+
 </Project>

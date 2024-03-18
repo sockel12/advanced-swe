@@ -17,38 +17,33 @@
 ### Adapter
 - Api Endpoint (Benjamin)
     - FlightService
-        ```json
-        POST {
+    > POST {
             "FlightNr", "CarrID", "ConnectionID", "StartZeit", "Endzeit", "FlightMeal"
-        }
-        ```
+     }
+    
     - Booking Service
+
+- Repository
 
 - Store (Niklas)
     - StoreController
     - DbController
         - Liste an Connections
-    - Query <T : Idb>
-    - DbFlight -> Beziehung als String
-    - DbCarrier
-    - DbConnection
 
-- Repositories (Niklas)
-    - RepositoryManager -> Map(Type, Repository<Type>)
-    - FlightRepository -> Query<DbFlight>
-    - Repository<Carrier>
-    - Repository<Connection>
-    
 ### Application 
 Manager (Benjamin)
-    - FlightManager
-        - CreateFlight("flightNr", carrObj, flightMenObj, "startDate", "endDate")
-        - UpdateFlight()
-    - CarrierManager
-        - AddConnection(carr, conn)
-            -> carr.add(conn);
+- FlightManager
+    - CreateFlight("flightNr", carrObj, flightMenObj, "startDate", "endDate")
+    - UpdateFlight()
+- CarrierManager
+    - AddConnection(carr, conn)
+        -> carr.add(conn);
 
 ### Domain (Benjamin)
 - Flights -> Beziehungen als Objekte
 - Carrier
 - Connection
+
+# Code Smell
+## Repository
+Should IRepository extend ICollection or IEnumerator?
