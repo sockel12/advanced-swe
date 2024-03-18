@@ -1,10 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{2C56710C-FE59-4B0F-ADD5-ADE25B7CCEB8}"
-EndProject
+# 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Administration", "Administration\Administration.csproj", "{18F1ADBB-0564-45C6-8A88-2ADDDB7219AB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{07B1CE29-20DA-4822-AE3C-BBEFD2B156E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adapter-Repositories", "Adapter-Repositories\Adapter-Repositories.csproj", "{2DDDA5D6-8A4D-4443-A24E-87761CA0BD86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adapter-Store", "Adapter-Store\Adapter-Store.csproj", "{FD865915-1848-43CB-AD34-3AC9E866DBD4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +27,13 @@ Global
 		{07B1CE29-20DA-4822-AE3C-BBEFD2B156E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07B1CE29-20DA-4822-AE3C-BBEFD2B156E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07B1CE29-20DA-4822-AE3C-BBEFD2B156E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DDDA5D6-8A4D-4443-A24E-87761CA0BD86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DDDA5D6-8A4D-4443-A24E-87761CA0BD86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DDDA5D6-8A4D-4443-A24E-87761CA0BD86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DDDA5D6-8A4D-4443-A24E-87761CA0BD86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD865915-1848-43CB-AD34-3AC9E866DBD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD865915-1848-43CB-AD34-3AC9E866DBD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD865915-1848-43CB-AD34-3AC9E866DBD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD865915-1848-43CB-AD34-3AC9E866DBD4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

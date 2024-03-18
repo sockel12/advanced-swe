@@ -19,7 +19,10 @@
 
     <ItemGroup>
       <Folder Include="Administration\" />
-      <Folder Include="Database\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Administration\Administration.csproj" />
     </ItemGroup>
 
 </Project>
