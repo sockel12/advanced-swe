@@ -5,7 +5,7 @@ using Domain_Code;
 namespace Application_Code.Interfaces;
 
 public interface IRepository<T> : ICollection<T>
-    where T : IIdentifiable
+    where T : Identifiable
 {
     public bool Update(T item);
     public ImmutableList<T> GetAll();

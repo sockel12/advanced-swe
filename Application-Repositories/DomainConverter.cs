@@ -5,7 +5,7 @@ using Domain_Code;
 namespace Adapter_Repositories;
 
 public class DomainConverter<TDomain, TDto> : IConverter
-    where TDomain : IIdentifiable
+    where TDomain : Identifiable
     where TDto : IDTO
 {
     
@@ -14,14 +14,15 @@ public class DomainConverter<TDomain, TDto> : IConverter
         cfg.CreateMap<TDomain, TDto>().ReverseMap();
     }));
     
-    public IIdentifiable ToDomain(IDTO dto)
+    public Identifiable ToDomain(IDTO dto)
     {
         return _mapper.Map<TDto, TDomain>((TDto)dto);
     }
 
-    public IDTO FromDomain(IIdentifiable identifiable)
+    public IDTO FromDomain(Identifiable identifiable)
     {
-        return _mapper.Map<TDomain, TDto>((TDomain)identifiable);
+        var a = _mapper.Map<TDomain, TDto>((TDomain)identifiable);
+        return a;
     }
 
     public Type GetIdtoType()

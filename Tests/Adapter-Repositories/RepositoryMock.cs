@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Tests.Adapter_Repositories
 {
     internal class RepositoryMock<T> : IRepository<T>
-        where T : IIdentifiable
+        where T : Identifiable
     {
         public int Count => throw new NotImplementedException();
 

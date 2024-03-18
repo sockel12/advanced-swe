@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Immutable;
 using System.Globalization;
+using System.Reflection;
 using Adapter_Repositories;
+using Adapter_Store_CSV.DTO;
 using Application_Code.Interfaces;
 using AutoMapper;
 using CsvHelper;
@@ -11,7 +13,7 @@ using Domain_Code;
 namespace Adapter_Store_CSV;
 
 public class Repository<T> : IRepository<T>
-    where T : IIdentifiable
+    where T : Identifiable
 {
     #region ICollectable
     public int Count { get; private set; }
@@ -59,7 +61,10 @@ public class Repository<T> : IRepository<T>
     
     #endregion ICollection
     
-    private static string BaseDir => @"/Users/I550939/Documents/Code/SWE/Adapter-Store-CSV/data";
+    // private static string BaseDir => @"/Users/I550939/Documents/Code/SWE/Adapter-Store-CSV/data";
+    // Get the directory of the executing assembly
+    private static string BaseDir => Path.Join(
+        Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", "..", "..", "..", "Adapter-Store-CSV", "data") ?? "";
     private string DataCsvFile { get; }
     private HashSet<T> Records { get; } = new();
     private readonly IConverter _converter;
@@ -67,11 +72,18 @@ public class Repository<T> : IRepository<T>
     {
         _converter = converter;
         var className = typeof(T).Name;
-        DataCsvFile = Path.Join(BaseDir, className + ".csv");
 
+        if (BaseDir == "")
+        {
+            throw new DirectoryNotFoundException("The directory could not be found or is not accessible");
+        }
+        
+        DataCsvFile = Path.Join(BaseDir, className + ".csv");
+        
         if (!File.Exists(DataCsvFile))
         {
-            File.Create(DataCsvFile);
+            // Not only is the file not found, but the directory could also be missing or is not accessible
+            FileStream f = File.Create(DataCsvFile);
         }
         
         LoadCsv();
@@ -89,7 +101,7 @@ public class Repository<T> : IRepository<T>
         Records.Clear();
         foreach (IDTO record in reader.GetRecords(_converter.GetIdtoType()))
         {
-            Records.Add(
+            this.Add(
                 (T)_converter.ToDomain(record)
             );
         }
@@ -101,11 +113,24 @@ public class Repository<T> : IRepository<T>
     {
         using var streamWriter = new StreamWriter(DataCsvFile);
         using var writer = new CsvWriter(streamWriter, DefaultConfig);
+        // Create the header for the csv file and make an empty record so that the 
+        // next record is in the 2nd line
+        writer.WriteHeader(_converter.GetIdtoType());
+        writer.NextRecord();
+        
         foreach (var record in Records)
         {
-            writer.WriteRecord(
-                _converter.FromDomain(record)
-            );
+            try
+            {
+                var idto = _converter.FromDomain(record);
+                writer.WriteRecord( Convert.ChangeType(idto, _converter.GetIdtoType()) );
+                writer.NextRecord();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
         }
     }
 

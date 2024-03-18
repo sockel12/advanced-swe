@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Tests.Adapter_Repositories
 {
-    internal class TestObject : IIdentifiable
+    internal class TestObject : Identifiable
     {
-        public Key GetId()
+        public override Key GetId()
         {
             return new Key("key");
         }

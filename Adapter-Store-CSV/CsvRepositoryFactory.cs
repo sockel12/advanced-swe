@@ -14,18 +14,18 @@ public class CsvRepositoryFactory : IRepositoryFactory
         { typeof(Customer), new DomainConverter<Customer, CustomerDTO>() }
     };
 
-    private readonly Dictionary<Type, IRepository<IIdentifiable>> _repositories = new();
-    public bool HasRecords<T>() where T : IIdentifiable
+    private readonly Dictionary<Type, IRepository<Identifiable>> _repositories = new();
+    public bool HasRecords<T>() where T : Identifiable
     {
         return true;
     }
 
-    public IRepository<T> GetRepository<T>() where T : IIdentifiable
+    public IRepository<T> GetRepository<T>() where T : Identifiable
     {
         return new Repository<T>(_converters[typeof(T)]);
     }
 
-    public IRepository<T> CreateRepository<T>() where T : IIdentifiable
+    public IRepository<T> CreateRepository<T>() where T : Identifiable
     {
         return new Repository<T>(_converters[typeof(T)]);
     }

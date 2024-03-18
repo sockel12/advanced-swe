@@ -17,7 +17,7 @@ public class EntityManager : IEntityManager
     
     
     public IRepository<T> GetRepository<T>()
-        where T : IIdentifiable
+        where T : Identifiable
     {
         return new Repository<T>(
             _factoriesFactories

@@ -7,7 +7,7 @@ using NotImplementedException = System.NotImplementedException;
 namespace Adapter_Repositories;
 
 public class Repository<T>(IEnumerable<IRepository<T>> Repositories) : IRepository<T>
-    where T : IIdentifiable
+    where T : Identifiable
 {
     public int Count { get; private set; } = Repositories.Count();
     

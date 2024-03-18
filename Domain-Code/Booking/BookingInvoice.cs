@@ -1,9 +1,9 @@
 namespace Domain_Code;
 
-public class BookingInvoice : IIdentifiable
+public class BookingInvoice : Identifiable
 {
     public Booking Booking { get; set; }
-    public Key GetId()
+    public override Key GetId()
     {
         return Booking.GetId();
     }

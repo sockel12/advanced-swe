@@ -4,7 +4,7 @@ namespace Adapter_Repositories;
 
 public interface IConverter
 {
-    public IIdentifiable ToDomain(IDTO dto);
-    public IDTO FromDomain(IIdentifiable identifiable);
+    public Identifiable ToDomain(IDTO dto);
+    public IDTO FromDomain(Identifiable identifiable);
     public Type GetIdtoType();
 }

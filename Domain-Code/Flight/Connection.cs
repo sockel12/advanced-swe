@@ -1,6 +1,6 @@
 namespace Domain_Code;
 
-public class Connection : IIdentifiable
+public class Connection : Identifiable
 {
     public Key Id { get; set; }
     public Country CountryFrom { get; set; }
@@ -14,7 +14,7 @@ public class Connection : IIdentifiable
     public DistanceUnit DistanceUnit { get; set; }
     public int Period { get; set; }
     
-    public Key GetId()
+    public override Key GetId()
     {
         return Id;
     }
