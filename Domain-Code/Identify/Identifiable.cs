@@ -3,6 +3,11 @@ namespace Domain_Code;
 public abstract class Identifiable
 {
     public abstract Key GetId();
+
+    public string GetIdString()
+    {
+        return this.GetId().GetId();
+    }
     
     public static bool operator ==(Identifiable? a, Identifiable? b)
     {
@@ -38,5 +43,10 @@ public abstract class Identifiable
     public override int GetHashCode()
     {
         return GetId().GetHashCode();
+    }
+
+    public override string ToString()
+    {
+        return GetId().ToString();
     }
 }

@@ -36,6 +36,15 @@ public class Repository<T> : IRepository<T>
         WriteCsv();
     }
 
+    public void Add(params T[] items)
+    {
+        foreach (var item in items)
+        {
+            Records.Add(item);
+        }
+        WriteCsv();
+    }
+
     public void Clear()
     {
         Records.Clear();
@@ -83,7 +92,9 @@ public class Repository<T> : IRepository<T>
         if (!File.Exists(DataCsvFile))
         {
             // Not only is the file not found, but the directory could also be missing or is not accessible
-            FileStream f = File.Create(DataCsvFile);
+            if(!Directory.Exists(BaseDir))
+                Directory.CreateDirectory(BaseDir);
+            File.Create(DataCsvFile).Close();
         }
         
         LoadCsv();
@@ -96,17 +107,25 @@ public class Repository<T> : IRepository<T>
     };
     private void LoadCsv()
     {
-        using var streamReader = new StreamReader(DataCsvFile);
-        using var reader = new CsvReader(streamReader, DefaultConfig);
-        Records.Clear();
-        foreach (IDTO record in reader.GetRecords(_converter.GetIdtoType()))
+        try
         {
-            this.Add(
-                (T)_converter.ToDomain(record)
-            );
-        }
+            using var streamReader = new StreamReader(DataCsvFile);
+            using var reader = new CsvReader(streamReader, DefaultConfig);
+            
+            Records.Clear();
+            foreach (IDTO record in reader.GetRecords(_converter.GetIdtoType()))
+            {
+                this.Add(
+                    (T)_converter.ToDomain(record)
+                );
+            }
 
-        Count = Records.Count;
+            Count = Records.Count;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Failed to load csv file: '" + DataCsvFile + "':\n" + e.Message);
+        }
     }
 
     private void WriteCsv()

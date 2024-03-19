@@ -1,8 +1,13 @@
 namespace Domain_Code;
 
-public enum Country
+public class Country : Identifiable
 {
-    Germany,
-    USA,
-    Canada
+    public Key Id { get; set; }
+    public string Name { get; set; }
+    public string Code { get; set; }
+    
+    public override Key GetId()
+    {
+        return Id;
+    }
 }

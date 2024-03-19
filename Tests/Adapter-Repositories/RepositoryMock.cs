@@ -21,6 +21,11 @@ namespace Tests.Adapter_Repositories
         {
             throw new NotImplementedException();
         }
+        
+        public void Add(params T[] item)
+        {
+            throw new NotImplementedException();
+        }
 
         public void Clear()
         {

@@ -11,7 +11,8 @@ public class ReservationHandler(IEntityManager entityManager)
     
     public Reservation ReserveBooking(Booking booking)
     {
-        Reservation reservation = (Reservation)booking;
+        Reservation reservation = new Reservation();
+        reservation.Booking = booking.GetIdString();
         reservation.ReservationStatus = ReservationStatus.RESERVED;
         _reservationRepository.Add(reservation);
         return reservation;
@@ -30,6 +31,8 @@ public class ReservationHandler(IEntityManager entityManager)
         Reservation? reservation = _reservationRepository.Get(booking.GetId());
         if (reservation == null) return false;
         reservation.ReservationStatus = ReservationStatus.CANCELED;
+        // If there is a paid reservation, the customer should be refunded
+        // but this is not modeled here
         return true;
     }
 }

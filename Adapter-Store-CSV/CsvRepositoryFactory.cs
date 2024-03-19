@@ -11,7 +11,13 @@ public class CsvRepositoryFactory : IRepositoryFactory
 {
     private readonly Dictionary<Type, IConverter> _converters = new ()
     {
-        { typeof(Customer), new DomainConverter<Customer, CustomerDTO>() }
+        { typeof(Customer), new DomainConverter<Customer, CustomerDTO>() },
+        { typeof(Flight), new DomainConverter<Flight, FlightDTO>()},
+        { typeof(Airport), new DomainConverter<Airport, AirportDTO>()},
+        { typeof(Booking), new DomainConverter<Booking, BookingDTO>()},
+        { typeof(Connection), new DomainConverter<Connection, ConnectionDTO>()},
+        { typeof(Country), new DomainConverter<Country, CountryDTO>()},
+        { typeof(Carrier), new DomainConverter<Carrier, CarrierDTO>()}
     };
 
     private readonly Dictionary<Type, IRepository<Identifiable>> _repositories = new();

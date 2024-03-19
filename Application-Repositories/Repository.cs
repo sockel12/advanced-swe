@@ -30,6 +30,14 @@ public class Repository<T>(IEnumerable<IRepository<T>> Repositories) : IReposito
     {
         throw new NotImplementedException();
     }
+    
+    public void Add(params T[] items)
+    {
+        foreach (var repository in Repositories)
+        {
+            repository.Add(items);
+        }
+    }
 
     public void Clear()
     {
