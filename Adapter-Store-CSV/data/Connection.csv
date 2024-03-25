@@ -1,0 +1,3 @@
+Id;AirportFrom;AirportTo;DepartureDateTime;ArrivalDateTime;FlightDuration;Distance;DistanceUnit
+LH456;FRA;LAX;01/01/0001 00:00:00;01/01/0001 00:00:00;1275;9090;KM
+LH457;LAX;FRA;01/01/0001 00:00:00;01/01/0001 00:00:00;1275;9090;KM
