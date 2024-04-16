@@ -5,7 +5,7 @@ using CsvHelper;
 
 namespace Adapter_Administration;
 
-internal enum Method
+public enum Method
 {
     GET,
     POST,
@@ -14,26 +14,20 @@ internal enum Method
     DELETE
 }
 
-public class WebServer
+public class Webserver
 {
     private WebApplication app;
     
-    public WebServer(string[] args)
+    public Webserver(bool useSwagger, bool withMockData)
     {
-        var builder = WebApplication.CreateBuilder(args);
+        var builder = WebApplication.CreateBuilder();
         
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-
-        EntityManager manager = new EntityManager();
-        manager.RegisterRepositoryFactory(new CsvRepositoryFactory());
-
-        builder.Services.AddSingleton<IEntityManager>(manager);
-
         app = builder.Build();
 
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
+        if (useSwagger)
         {
             app.UseSwagger();
             app.UseSwaggerUI();
@@ -41,7 +35,7 @@ public class WebServer
 
         app.UseHttpsRedirection();
 
-        if (app.Environment.IsDevelopment())
+        if (withMockData)
         {
             MockDataGenerator.CreateMockData();
         }
@@ -50,33 +44,33 @@ public class WebServer
     
     public void Get(string path, Action action)
     {
-        SetupRoute(path, action, Method.GET);
+        AddRoute(path, action, Method.GET);
     }
     
     public void Post(string path, Action<object> action)
     {
-        SetupRoute(path, action, Method.POST);
+        AddRoute(path, action, Method.POST);
 
     }
     
-    public void Put(string path, Action action)
+    public void Put(string path, Action<object> action)
     {
-        SetupRoute(path, action, Method.PUT);
+        AddRoute(path, action, Method.PUT);
     }
     
     public void Update(string path, Action<object> action)
     {
-        SetupRoute(path, action, Method.UPDATE);
+        AddRoute(path, action, Method.UPDATE);
 
     }
     
     public void Delete(string path, Action<object> action)
     {
-        SetupRoute(path, action, Method.DELETE);
+        AddRoute(path, action, Method.DELETE);
 
     }
 
-    private void SetupRoute(string path, Delegate callback, Method method)
+    public void AddRoute(string path, Delegate callback, Method method)
     {
         Func<string, Delegate, RouteHandlerBuilder> mapFunction;
         switch (method)

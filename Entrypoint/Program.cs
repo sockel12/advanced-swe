@@ -2,5 +2,17 @@
 
 using Adapter_Administration;
 
-WebServer webServer = new WebServer(args);
-webServer.Start();
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        Webserver webserver = new WebserverBuilder()
+            .Route(new("/test", Method.GET, () => { return "{Test}"; }))
+            .WithMockData()
+            .UseSwagger()
+            .Build();
+        
+        webserver.Start();
+    }
+    
+}
