@@ -11,7 +11,7 @@ public class Route(string path, Method method, Delegate action)
 public class RouteBuilder
 {
     private readonly string _rootPath;
-    private readonly RouteBuilder? _previousRouteBuilder = null;
+    private readonly List<Route> _subRoutes = new();
     private readonly List<Route> _getCallbacks = new();
     private readonly List<Route> _postCallbacks = new();
     private readonly List<Route> _putCallbacks = new();
@@ -20,12 +20,6 @@ public class RouteBuilder
 
     public RouteBuilder(string rootPath)
     {
-        _rootPath = rootPath;
-    }
-    
-    public RouteBuilder(RouteBuilder previousRouteBuilder, string rootPath)
-    {
-        _previousRouteBuilder = previousRouteBuilder;
         _rootPath = rootPath;
     }
     
@@ -59,17 +53,24 @@ public class RouteBuilder
         return this;
     }
 
-    public RouteBuilder SubRoute(string path)
+    public RouteBuilder SubRoute(IEnumerable<Route> routes)
     {
-        return new RouteBuilder(this, $"{_rootPath}/{path}");
+        foreach(var route in routes)
+        {
+            _subRoutes.Add(new($"{_rootPath}/{route.Path}", route.Method, route.Action));
+        }
+        return this;
     }
     
     public IEnumerable<Route> Build()
     {
-        IEnumerable<Route> previousRoutes = _previousRouteBuilder?.Build() ?? new List<Route>();
-        IEnumerable<Route> currentRoutes = _getCallbacks.Concat(_postCallbacks).Concat(_putCallbacks).Concat(_deleteCallbacks).Concat(_patchCallbacks);
-        
-        return previousRoutes.Concat(currentRoutes);
+        IEnumerable<Route> currentRoutes = _getCallbacks
+            .Concat(_postCallbacks)
+            .Concat(_putCallbacks)
+            .Concat(_deleteCallbacks)
+            .Concat(_patchCallbacks)
+            .Concat(_subRoutes);
+        return currentRoutes;
     }
     
 }
