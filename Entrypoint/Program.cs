@@ -16,19 +16,33 @@ public class Program
         );
 
         ReservationHandler reservationHandler = new(entityManager);
+        PlaneTypeHandler planeTypeHandler = new(entityManager);
+        AirportHandler airportHandler = new(entityManager);
         IEnumerable<Route> reservationRoutes = new RouteBuilder("reservation")
             .Post("pay", reservationHandler.PayReservation)
             .Post("cancel", reservationHandler.CancelReservation)
             .Build();
         
-        IEnumerable<Route> reservationRoutes2 = new RouteBuilder("reservation2")
-            .Post("pay", reservationHandler.PayReservation)
-            .Post("cancel", reservationHandler.CancelReservation)
+        IEnumerable<Route> planetypeRoutes = new RouteBuilder("planetype")
+            .Get(planeTypeHandler.GetPlaneTypes)
+            .Get("{id}", planeTypeHandler.GetPlaneType)
+            .Post(planeTypeHandler.CreatePlaneType)
+            .Put( planeTypeHandler.UpdatePlaneType)
+            .Delete( planeTypeHandler.DeletePlaneType)
+            .Build();
+        
+        IEnumerable<Route> airportRoutes = new RouteBuilder("airport")
+            .Get(airportHandler.GetAllAirports)
+            .Get("{id}", airportHandler.GetAirport)
+            .Post(airportHandler.CreateAirport)
+            .Put( airportHandler.UpdateAirport)
+            .Delete( airportHandler.DeleteAirport)
             .Build();
         
         IEnumerable<Route> routesV1 = new RouteBuilder("/api/v1")
             .SubRoute(reservationRoutes)
-            .SubRoute(reservationRoutes2)
+            .SubRoute(planetypeRoutes)
+            .SubRoute(airportRoutes)
             .Build();
         
         Webserver webserver = new WebserverBuilder()

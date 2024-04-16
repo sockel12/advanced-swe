@@ -9,6 +9,7 @@ public interface IRepository<T> : ICollection<T>
 {
     public void Add(params T[] items);
     public bool Update(T item);
+    public bool Delete(Key key);
     public ImmutableList<T> GetAll();
     public T? Get(Key key);
 }

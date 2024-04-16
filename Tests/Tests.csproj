@@ -24,7 +24,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Adapter-Administration\Adapter-Administration.csproj" />
-      <ProjectReference Include="..\Adapter-Store\Adapter-Store.csproj" />
       <ProjectReference Include="..\Domain-Code\Domain-Code.csproj" />
     </ItemGroup>
 

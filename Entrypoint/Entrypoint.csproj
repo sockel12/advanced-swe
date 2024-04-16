@@ -10,7 +10,6 @@
     <ItemGroup>
       <ProjectReference Include="..\Adapter-Administration\Adapter-Administration.csproj" />
       <ProjectReference Include="..\Adapter-Store-CSV\Adapter-Store-CSV.csproj" />
-      <ProjectReference Include="..\Adapter-Store\Adapter-Store.csproj" />
       <ProjectReference Include="..\Application-Code\Application-Code.csproj" />
       <ProjectReference Include="..\Application-Repositories\Application-Repositories.csproj" />
     </ItemGroup>

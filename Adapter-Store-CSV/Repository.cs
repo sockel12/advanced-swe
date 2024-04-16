@@ -161,6 +161,14 @@ public class Repository<T> : IRepository<T>
         return isSuccess;
     }
 
+    public bool Delete(Key key)
+    {
+        var item = Records.First(identifiable => identifiable.GetId() == key);
+        var isSuccess = Records.Remove(item);
+        WriteCsv();
+        return isSuccess;
+    }
+
     public ImmutableList<T> GetAll()
     {
         return Records.ToImmutableList();

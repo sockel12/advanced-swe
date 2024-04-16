@@ -3,6 +3,7 @@ using Adapter_Store_CSV.DTO;
 using Application_Code.Interfaces;
 using AutoMapper;
 using Domain_Code;
+using Domain_Code.Management;
 using IDTO = Adapter_Repositories.IDTO;
 
 namespace Adapter_Store_CSV;
@@ -18,7 +19,8 @@ public class CsvRepositoryFactory : IRepositoryFactory
         { typeof(Connection), new DomainConverter<Connection, ConnectionDTO>()},
         { typeof(Country), new DomainConverter<Country, CountryDTO>()},
         { typeof(Carrier), new DomainConverter<Carrier, CarrierDTO>()},
-        { typeof(Reservation), new DomainConverter<Reservation, ReservationDTO>()}
+        { typeof(Reservation), new DomainConverter<Reservation, ReservationDTO>()},
+        { typeof(PlaneType), new DomainConverter<PlaneType, PlaneTypeDTO>()}
     };
 
     private readonly Dictionary<Type, IRepository<Identifiable>> _repositories = new();

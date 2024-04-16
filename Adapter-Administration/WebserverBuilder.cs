@@ -23,9 +23,21 @@ public class RouteBuilder
         _rootPath = rootPath;
     }
     
+    public RouteBuilder Get(Delegate callback)
+    {
+        _getCallbacks.Add(new($"{_rootPath}", Method.GET, callback));
+        return this;
+    }
+    
     public RouteBuilder Get(string path, Delegate callback)
     {
         _getCallbacks.Add(new($"{_rootPath}/{path}", Method.GET, callback));
+        return this;
+    }
+    
+    public RouteBuilder Post(Delegate callback)
+    {
+        _postCallbacks.Add(new($"{_rootPath}", Method.POST, callback));
         return this;
     }
     
@@ -35,15 +47,33 @@ public class RouteBuilder
         return this;
     }
     
+    public RouteBuilder Put(Delegate callback)
+    {
+        _putCallbacks.Add(new($"{_rootPath}", Method.PUT, callback));
+        return this;
+    }
+    
     public RouteBuilder Put(string path, Delegate callback)
     {
         _putCallbacks.Add(new($"{_rootPath}/{path}", Method.PUT, callback));
         return this;
     }
     
+    public RouteBuilder Delete(Delegate callback)
+    {
+        _deleteCallbacks.Add(new($"{_rootPath}", Method.DELETE, callback));
+        return this;
+    }
+    
     public RouteBuilder Delete(string path, Delegate callback)
     {
         _deleteCallbacks.Add(new($"{_rootPath}/{path}", Method.DELETE, callback));
+        return this;
+    }
+    
+    public RouteBuilder Patch(Delegate callback)
+    {
+        _patchCallbacks.Add(new($"{_rootPath}", Method.PATCH, callback));
         return this;
     }
     
