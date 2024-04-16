@@ -42,29 +42,29 @@ public class Webserver
 
     }
     
-    public void Get(string path, Action action)
+    public void Get(string path, Delegate action)
     {
         AddRoute(path, action, Method.GET);
     }
     
-    public void Post(string path, Action<object> action)
+    public void Post(string path, Delegate action)
     {
         AddRoute(path, action, Method.POST);
 
     }
     
-    public void Put(string path, Action<object> action)
+    public void Put(string path, Delegate action)
     {
         AddRoute(path, action, Method.PUT);
     }
     
-    public void Update(string path, Action<object> action)
+    public void Update(string path, Delegate action)
     {
         AddRoute(path, action, Method.UPDATE);
 
     }
     
-    public void Delete(string path, Action<object> action)
+    public void Delete(string path, Delegate action)
     {
         AddRoute(path, action, Method.DELETE);
 
