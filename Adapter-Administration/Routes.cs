@@ -5,12 +5,12 @@ namespace Adapter_Administration;
 
 public static class Routes
 {
-    public static bool CreateRoutes(ref WebApplication app)
+    public static bool CreateRoutes(WebApplication app)
     {
-        return CreateGetRoutes(ref app) && CreatePostRoutes(ref app);
+        return CreateGetRoutes(app) && CreatePostRoutes(app);
     }
     
-    private static bool CreateGetRoutes(ref WebApplication app){
+    private static bool CreateGetRoutes(WebApplication app){
         
 
         app.MapGet("/customers", (IEntityManager manager) =>
@@ -57,7 +57,7 @@ public static class Routes
         return true;
     }
     
-    private static bool CreatePostRoutes(ref WebApplication app)
+    private static bool CreatePostRoutes(WebApplication app)
     {
         app.MapPost("/customers", (IEntityManager manager, Customer customer) =>
             {

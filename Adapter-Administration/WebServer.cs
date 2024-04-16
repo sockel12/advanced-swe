@@ -31,7 +31,7 @@ public class WebServer
 
         app.UseHttpsRedirection();
 
-        if (!Routes.CreateRoutes(ref app))
+        if (!Routes.CreateRoutes(app))
         {
             Console.WriteLine("Failed to create routes.");
         }
