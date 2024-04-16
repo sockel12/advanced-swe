@@ -9,6 +9,10 @@ public class Program
         IEnumerable<Route> routes = new RouteBuilder("/api/v1")
             .Get("test", () => { return "Test"; })
             .Get("test/{id}", (string id) => { return id; })
+            .SubRoute("reservations")
+                .Post("cancel", () => "Reservation cancelled")
+                .SubRoute("aaa")
+                    .Get("bbb", () => "ccc")
             .Build();
             
         IEnumerable<Route> routesV2 = new RouteBuilder("/api/v2")

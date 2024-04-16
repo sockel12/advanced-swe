@@ -1,7 +1,3 @@
-using System.Collections.Immutable;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Http.HttpResults;
-
 namespace Adapter_Administration;
 
 
@@ -15,6 +11,7 @@ public class Route(string path, Method method, Delegate action)
 public class RouteBuilder
 {
     private readonly string _rootPath;
+    private readonly RouteBuilder? _previousRouteBuilder = null;
     private readonly List<Route> _getCallbacks = new();
     private readonly List<Route> _postCallbacks = new();
     private readonly List<Route> _putCallbacks = new();
@@ -23,6 +20,12 @@ public class RouteBuilder
 
     public RouteBuilder(string rootPath)
     {
+        _rootPath = rootPath;
+    }
+    
+    public RouteBuilder(RouteBuilder previousRouteBuilder, string rootPath)
+    {
+        _previousRouteBuilder = previousRouteBuilder;
         _rootPath = rootPath;
     }
     
@@ -55,10 +58,18 @@ public class RouteBuilder
         _patchCallbacks.Add(new($"{_rootPath}/{path}", Method.PATCH, callback));
         return this;
     }
+
+    public RouteBuilder SubRoute(string path)
+    {
+        return new RouteBuilder(this, $"{_rootPath}/{path}");
+    }
     
     public IEnumerable<Route> Build()
     {
-        return _getCallbacks.Concat(_postCallbacks).Concat(_putCallbacks).Concat(_deleteCallbacks).Concat(_patchCallbacks);
+        IEnumerable<Route> previousRoutes = _previousRouteBuilder?.Build() ?? new List<Route>();
+        IEnumerable<Route> currentRoutes = _getCallbacks.Concat(_postCallbacks).Concat(_putCallbacks).Concat(_deleteCallbacks).Concat(_patchCallbacks);
+        
+        return previousRoutes.Concat(currentRoutes);
     }
     
 }
