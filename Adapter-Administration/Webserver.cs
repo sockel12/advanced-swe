@@ -10,7 +10,7 @@ public enum Method
     GET,
     POST,
     PUT,
-    UPDATE,
+    PATCH,
     DELETE
 }
 
@@ -58,9 +58,9 @@ public class Webserver
         AddRoute(path, action, Method.PUT);
     }
     
-    public void Update(string path, Delegate action)
+    public void Patch(string path, Delegate action)
     {
-        AddRoute(path, action, Method.UPDATE);
+        AddRoute(path, action, Method.PATCH);
 
     }
     
@@ -84,7 +84,7 @@ public class Webserver
             case Method.PUT:
                 mapFunction = app.MapPut;
                 break;
-            case Method.UPDATE:
+            case Method.PATCH:
                 mapFunction = app.MapPut;
                 break;
             case Method.DELETE:
