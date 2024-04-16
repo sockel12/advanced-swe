@@ -1,28 +1,38 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using Adapter_Administration;
+using Adapter_Repositories;
+using Adapter_Store_CSV;
+using Application_Code.Handler;
 
 public class Program
 {
     public static void Main(string[] args)
     {
-        IEnumerable<Route> routes = new RouteBuilder("/api/v1")
-            .Get("test", () => { return "Test"; })
-            .Get("test/{id}", (string id) => { return id; })
-            .SubRoute("reservations")
-                .Post("cancel", () => "Reservation cancelled")
-                .SubRoute("aaa")
-                    .Get("bbb", () => "ccc")
+
+        EntityManager entityManager = new();
+        entityManager.RegisterRepositoryFactory(
+            new CsvRepositoryFactory()
+        );
+
+        ReservationHandler reservationHandler = new(entityManager);
+        IEnumerable<Route> reservationRoutes = new RouteBuilder("reservation")
+            .Post("pay", reservationHandler.PayReservation)
+            .Post("cancel", reservationHandler.CancelReservation)
             .Build();
-            
-        IEnumerable<Route> routesV2 = new RouteBuilder("/api/v2")
-            .Get("test", () => { return "Test"; })
-            .Get("test/{id}", (string id) => { return id; })
+        
+        IEnumerable<Route> reservationRoutes2 = new RouteBuilder("reservation2")
+            .Post("pay", reservationHandler.PayReservation)
+            .Post("cancel", reservationHandler.CancelReservation)
+            .Build();
+        
+        IEnumerable<Route> routesV1 = new RouteBuilder("/api/v1")
+            .SubRoute(reservationRoutes)
+            .SubRoute(reservationRoutes2)
             .Build();
         
         Webserver webserver = new WebserverBuilder()
-            .Routes(routes)
-            .Routes(routesV2)
+            .Routes(routesV1)
             .WithMockData()
             .UseSwagger()
             .Build();

@@ -17,7 +17,8 @@ public class CsvRepositoryFactory : IRepositoryFactory
         { typeof(Booking), new DomainConverter<Booking, BookingDTO>()},
         { typeof(Connection), new DomainConverter<Connection, ConnectionDTO>()},
         { typeof(Country), new DomainConverter<Country, CountryDTO>()},
-        { typeof(Carrier), new DomainConverter<Carrier, CarrierDTO>()}
+        { typeof(Carrier), new DomainConverter<Carrier, CarrierDTO>()},
+        { typeof(Reservation), new DomainConverter<Reservation, ReservationDTO>()}
     };
 
     private readonly Dictionary<Type, IRepository<Identifiable>> _repositories = new();
