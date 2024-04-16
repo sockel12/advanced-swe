@@ -16,7 +16,6 @@ public static class MockDataGenerator
     private static IRepository<Booking> _repoBookings;
     private static IRepository<Carrier> _repoCarriers;
     
-    
     public static void CreateMockData()
     {
         _repoCustomer = _factory.GetRepository<Customer>();
@@ -38,14 +37,14 @@ public static class MockDataGenerator
     {
         Customer c1 = new Customer()
         {
-            Id = new Key("1"),
+            Id = new UUIDKey(),
             FirstName = "Niklas",
             LastName = "Haas",
             PassportNumber = "000000000"
         };
         Customer c2 = new Customer()
         {
-            Id = new Key("2"),
+            Id = new UUIDKey(),
             FirstName = "Benjamin",
             LastName = "Appel",
             PassportNumber = "111111111"
@@ -58,15 +57,13 @@ public static class MockDataGenerator
         
         Country germany = new Country()
         {
-            Id = new Key("DE"),
+            Code = new Key("DE"),
             Name = "Germany",
-            Code = "DE"
         };
         Country usa = new Country()
         {
-            Id = new Key("US"),
+            Code = new Key("US"),
             Name = "United States of America",
-            Code = "US"
         };
         _repoCountry.Add(germany, usa);
     }
