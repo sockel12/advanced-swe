@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Reflection;
+using System.Text;
 using Application_Code.Interfaces;
 using CsvHelper;
 using CsvHelper.Configuration;
@@ -95,7 +96,9 @@ public class Repository<T> : IRepository<T>
     private CsvConfiguration DefaultConfig { get; } = new(CultureInfo.InvariantCulture)
     {
         NewLine = Environment.NewLine,
-        Delimiter = ";"
+        Delimiter = ";",
+        Encoding = Encoding.UTF8,
+        PrepareHeaderForMatch = args => args.Header.ToLower()
     };
     private void LoadCsv()
     {
@@ -104,17 +107,22 @@ public class Repository<T> : IRepository<T>
             using var streamReader = new StreamReader(DataCsvFile);
             using var reader = new CsvReader(streamReader, DefaultConfig);
 
+            reader.Read();
+            reader.ReadHeader();
+            
             Records.Clear();
             foreach (T record in reader.GetRecords<T>())
             {
-                this.Add(record);
+                Records.Add(record);
             }
-
-            Count = Records.Count;
         }
         catch (Exception e)
         {
             Console.WriteLine("Failed to load csv file: '" + DataCsvFile + "':\n" + e.Message);
+        }
+        finally
+        {
+            Count = Records.Count;
         }
     }
 
