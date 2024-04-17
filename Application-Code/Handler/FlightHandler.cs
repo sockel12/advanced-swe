@@ -8,6 +8,15 @@ public class FlightHandler(IEntityManager entityManager)
 {
     private readonly IRepository<Flight> _flightRepository = entityManager.GetRepository<Flight>();
 
+    public Flight? GetFlight(string id)
+    {
+        return _flightRepository.Get(new Key(id));
+    }
+
+    public IList<Flight> GetAllFlights()
+    {
+        return _flightRepository.GetAll();
+    }
     public bool ScheduleFlight(string connectionId, string flightNumber, DateOnly flightDate, TimeOnly departureTime, TimeOnly arrivalTime, string planetype)
     {
         Flight flight = new Flight()

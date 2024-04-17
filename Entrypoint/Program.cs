@@ -22,10 +22,15 @@ public class Program
         CountryHandler countryHandler = new(entityManager);
         ConnectionHandler connectionHandler = new(entityManager);
         CustomerHandler customerHandler = new(entityManager);
+        BookingHandler bookingHandler = new(entityManager);
+        FlightHandler flightHandler = new(entityManager);
         
         IEnumerable<Route> reservationRoutes = new RouteBuilder("reservation")
+            .Get(reservationHandler.GetAllReservations)
+            .Get("{id}", reservationHandler.GetReservation)
             .Post("pay", reservationHandler.PayReservation)
             .Post("cancel", reservationHandler.CancelReservation)
+            .Post("reserve", reservationHandler.ReserveBooking)
             .Build();
         
         IEnumerable<Route> planetypeRoutes = new RouteBuilder("planetype")
@@ -67,6 +72,19 @@ public class Program
             .Put( customerHandler.UpdateCustomer)
             .Delete( customerHandler.DeleteCustomer)
             .Build();
+
+        IEnumerable<Route> bookingRoutes = new RouteBuilder("booking")
+            .Get(bookingHandler.GetAll)
+            .Get("{id}", bookingHandler.Get)
+            .Post(bookingHandler.CreateBooking)
+            .Build();
+
+        IEnumerable<Route> flightRoutes = new RouteBuilder("flight")
+            .Get(flightHandler.GetAllFlights)
+            .Get("{id}", flightHandler.GetFlight)
+            .Post(flightHandler.ScheduleFlight)
+            .Delete(flightHandler.CancelFlight)
+            .Build();
         
         IEnumerable<Route> routesV1 = new RouteBuilder("/api/v1")
             .SubRoute(reservationRoutes)
@@ -75,6 +93,8 @@ public class Program
             .SubRoute(countryRoutes)
             .SubRoute(connectionRoutes)
             .SubRoute(customerRoutes)
+            .SubRoute(bookingRoutes)
+            .SubRoute(flightRoutes)
             .Build();
         
         Webserver webserver = new WebserverBuilder()

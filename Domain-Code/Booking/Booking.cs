@@ -7,7 +7,7 @@ public class Booking : Identifiable
     public string Flight { get; set; }
     public FlightClass FlightClass { get; set; }
     public int LuggageCount { get; set; }
-    public double PaidPrice { get; set; }
+    public double Price { get; set; }
     public DateTime BookingDate { get; set; }
     
     public override Key GetId()

@@ -173,6 +173,6 @@ public class Repository<T> : IRepository<T>
 
     public T? Get(Key key)
     {
-        return Records.First(identifiable => identifiable.GetId() == key);
+        return Records.FirstOrDefault(identifiable => identifiable.GetId() == key);
     }
 }

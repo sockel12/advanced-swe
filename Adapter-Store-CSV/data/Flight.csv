@@ -1,0 +1,3 @@
+Id;DepartureTime;ArrivalTime;Connection;FlightDate;PlaneType
+LH456-01;12:00;21:00;LH456;08/01/0548;A747
+LH457-01;11:00;01:00;LH457;12/18/0575;A747

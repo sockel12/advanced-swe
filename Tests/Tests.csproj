@@ -19,10 +19,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Administration\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Adapter-Administration\Adapter-Administration.csproj" />
       <ProjectReference Include="..\Domain-Code\Domain-Code.csproj" />
     </ItemGroup>

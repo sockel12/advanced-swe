@@ -68,7 +68,7 @@ public class Repository<T>(IEnumerable<IRepository<T>> Repositories) : IReposito
 
     public T? Get(Key key)
     {
-        return Repositories.First(repository => repository.Get(key) != null).Get(key);
+        return Repositories.FirstOrDefault(repository => repository.Get(key) != null)?.Get(key);
     }
     
     public bool Delete(Key key)

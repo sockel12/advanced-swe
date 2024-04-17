@@ -1,7 +1,4 @@
-using Adapter_Repositories;
-using Adapter_Store_CSV;
-using Application_Code.Interfaces;
-using CsvHelper;
+using Microsoft.AspNetCore.Diagnostics;
 
 namespace Adapter_Administration;
 
@@ -13,7 +10,6 @@ public enum Method
     PATCH,
     DELETE
 }
-
 public class Webserver
 {
     private WebApplication app;
@@ -39,6 +35,14 @@ public class Webserver
         {
             MockDataGenerator.CreateMockData();
         }
+
+        app.UseExceptionHandler(applicationBuilder =>
+            applicationBuilder.Run(async context =>
+            {
+                var exception = context.Features.Get<IExceptionHandlerPathFeature>();
+                context.Response.StatusCode = 418;
+                await context.Response.WriteAsJsonAsync(new { error = exception?.Error.Message });
+            }));
 
     }
     
@@ -100,7 +104,7 @@ public class Webserver
     }
 
     public void Start()
-    {        
+    {
         app.Run();
     }
 }

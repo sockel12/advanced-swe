@@ -31,20 +31,22 @@ public static class MockDataGenerator
         CreateMockAirports();
         CreateMockConnections();
         CreateCarriers();
+        CreateFlights();
+        CreateBookings();
     }
     
     private static void CreateMockCustomers()
     {
         Customer c1 = new Customer()
         {
-            Id = new UUIDKey(),
+            Id = new NumberKey(1),
             FirstName = "Niklas",
             LastName = "Haas",
             PassportNumber = "000000000"
         };
         Customer c2 = new Customer()
         {
-            Id = new UUIDKey(),
+            Id = new NumberKey(2),
             FirstName = "Benjamin",
             LastName = "Appel",
             PassportNumber = "111111111"
@@ -131,5 +133,53 @@ public static class MockDataGenerator
             Website = "aa.com"
         };
         _repoCarriers.Add(c1, c2);
+    }
+
+    private static void CreateFlights()
+    {
+        Flight f1 = new Flight()
+        {
+            FlightNumber = new Key("LH456-01"),
+            Connection = "LH456",
+            PlaneType = "A747",
+            FlightDate = DateOnly.FromDayNumber(200000),
+            DepartureTime = TimeOnly.Parse("12:00"),
+            ArrivalTime = TimeOnly.Parse("21:00")
+        };
+        Flight f2 = new Flight()
+        {
+            FlightNumber = new Key("LH457-01"),
+            Connection = "LH457",
+            PlaneType = "A747",
+            FlightDate = DateOnly.FromDayNumber(210000),
+            DepartureTime = TimeOnly.Parse("11:00"),
+            ArrivalTime = TimeOnly.Parse("01:00")
+        };
+        _repoFlight.Add(f1, f2);
+    }
+
+    private static void CreateBookings()
+    {
+        Booking b1 = new Booking()
+        {
+            BookingNumber = new UUIDKey(),
+            Customer = "1",
+            Flight = "LH456-01",
+            BookingDate = DateTime.Now,
+            FlightClass = FlightClass.Business,
+            Price = 845.99,
+            LuggageCount = 1
+        };
+        Booking b2 = new Booking()
+        {
+            BookingNumber = new UUIDKey(),
+            Customer = "2",
+            Flight = "LH456-01",
+            BookingDate = DateTime.Now,
+            FlightClass = FlightClass.FirstClass,
+            Price = 1225.00,
+            LuggageCount = 1
+        };
+        _repoBookings.Add(b1, b2);
     }
 }
