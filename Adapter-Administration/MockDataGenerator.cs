@@ -162,7 +162,7 @@ public static class MockDataGenerator
     {
         Booking b1 = new Booking()
         {
-            BookingNumber = new UUIDKey(),
+            BookingNumber = new NumberKey(1),
             Customer = "1",
             Flight = "LH456-01",
             BookingDate = DateTime.Now,
@@ -172,7 +172,7 @@ public static class MockDataGenerator
         };
         Booking b2 = new Booking()
         {
-            BookingNumber = new UUIDKey(),
+            BookingNumber = new NumberKey(1),
             Customer = "2",
             Flight = "LH456-01",
             BookingDate = DateTime.Now,

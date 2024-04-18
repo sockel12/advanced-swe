@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Immutable;
 using Application_Code.Handler;
 using Application_Code.Interfaces;
 using Domain_Code;
@@ -45,7 +47,7 @@ public class ReservationHandlerTest
         };
     }
 
-    private Reservation GenerateReservation(string id, int price = 0, string bookingId = "booking-id")
+    private Reservation GenerateReservation(string id, int price = 0, string bookingId = "booking-id", ReservationStatus status = ReservationStatus.RESERVED)
     {
         return new Reservation()
         {
@@ -53,7 +55,7 @@ public class ReservationHandlerTest
             Booking = bookingId,
             Customer = "customer-id",
             PaidPrice = price,
-            ReservationStatus = ReservationStatus.RESERVED,
+            ReservationStatus = status
         };
     }
 
@@ -101,7 +103,7 @@ public class ReservationHandlerTest
         var wrongPrice = 40;
         var bookingId = "booking-id";
         
-        var unpaidReservation = GenerateReservation("reservation-id", bookingId : bookingId);
+        var unpaidReservation = GenerateReservation("reservation-id", bookingId: bookingId);
         var booking = GenerateBooking(bookingId, actPrice);
         
         
@@ -117,8 +119,128 @@ public class ReservationHandlerTest
             .Verifiable();
         
         // Act and Assert
-        Assert.Throws<Exception>(() => cut.PayReservation(unpaidReservation, wrongPrice));
+        Assert.Throws<InvalidInputException>(() => cut.PayReservation(unpaidReservation, wrongPrice));
+        
         // Verify
         Mock.Verify(reservationRepoMock, bookingRepoMock, entityManagerMock);
+    }
+
+    [Test]
+    public void Test03_ReserveBooking()
+    {
+        var bookingId = "booking-id";
+        var booking = GenerateBooking(bookingId);
+        var unpaidReservation = GenerateReservation("reservation-id", bookingId: bookingId);
+
+        // Capture
+        bookingRepoMock
+            .Setup(repository => repository.Get(new Key(bookingId)))
+            .Returns(booking)
+            .Verifiable();
+
+        reservationRepoMock
+            .Setup(repository => repository.Update(unpaidReservation));
+
+        reservationRepoMock
+            .Setup(repository => repository.GetAll())
+            .Returns(ImmutableList<Reservation>.Empty)
+            .Verifiable();
+        
+        // Act
+        Reservation reservation = cut.ReserveBooking(bookingId);
+        
+        // Assert
+        Assert.That(reservation.PaidPrice, Is.EqualTo(0));
+        Assert.That(reservation.Booking, Is.EqualTo(bookingId));
+        Assert.That(reservation.ReservationStatus, Is.EqualTo(ReservationStatus.RESERVED));
+        
+        // Verify
+        Mock.Verify(bookingRepoMock, reservationRepoMock);
+    }
+    
+    [Test]
+    public void Test04_ReserveBooking_2()
+    {
+        var bookingId = "booking-id";
+
+        // Capture
+        bookingRepoMock
+            .Setup(repository => repository.Get(new Key(bookingId)))
+            .Returns((Booking?)null)
+            .Verifiable();
+
+        // Act & Assert
+        Assert.Throws<InvalidInputException>(() => cut.ReserveBooking(bookingId));
+        
+        // Verify
+        Mock.Verify(bookingRepoMock, reservationRepoMock);
+    }
+    
+    [Test]
+    public void Test05_ReserveBooking_3()
+    {
+        var bookingId = "booking-id";
+        var booking = GenerateBooking(bookingId);
+        var existingReservation = GenerateReservation("reservation-id", bookingId: bookingId);
+
+        // Capture
+        bookingRepoMock
+            .Setup(repository => repository.Get(new Key(bookingId)))
+            .Returns(booking)
+            .Verifiable();
+        
+        reservationRepoMock
+            .Setup(repository => repository.GetAll())
+            .Returns(new []{existingReservation}.ToImmutableList())
+            .Verifiable();
+
+        // Act & Assert
+        Assert.Throws<ElementExistsException>(() => cut.ReserveBooking(bookingId));
+        
+        // Verify
+        Mock.Verify(bookingRepoMock, reservationRepoMock);
+    }
+    
+    [Test]
+    public void Test06_CancelBooking()
+    {
+        var bookingId = "booking-id";
+        var reservationId = "reservation-id";
+        var existingReservation = GenerateReservation(reservationId, bookingId: bookingId);
+        var canceledReservation = GenerateReservation(reservationId, bookingId: bookingId, status: ReservationStatus.CANCELED);
+
+        // Capture
+        reservationRepoMock
+            .Setup(repository => repository.GetAll())
+            .Returns(new [] {existingReservation}.ToImmutableList())
+            .Verifiable();
+        
+        reservationRepoMock
+            .Setup(repository => repository.Update(canceledReservation))
+            .Verifiable();
+
+        // Act
+        cut.CancelReservation(bookingId);
+        
+        // Assert & Verify
+        Mock.Verify(bookingRepoMock, reservationRepoMock);
+    }
+    
+    [Test]
+    public void Test07_CancelBooking_2()
+    {
+        var reservationId = "booking-id";
+        
+        // Capture
+        reservationRepoMock
+            .Setup(repository => repository.GetAll())
+            .Returns(ImmutableList<Reservation>.Empty)
+            .Verifiable();
+
+        // Act & Assert
+        Assert.Throws<InvalidInputException>(() => cut.CancelReservation(reservationId));
+        
+        // Verify
+        Mock.Verify(bookingRepoMock, reservationRepoMock);
     }
 }

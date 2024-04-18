@@ -1,3 +1,4 @@
+using System.Globalization;
 using Application_Code.Interfaces;
 using Domain_Code;
 
@@ -17,11 +18,17 @@ public class ReservationHandler(IEntityManager entityManager)
     {
         return _reservationRepository.Get(new Key(id));
     }
-
+    
     public Reservation ReserveBooking(string bookingId)
     {
         Booking? booking = _bookingRepository.Get(new Key(bookingId));
-        if (booking == null) throw new Exception("Bookings does not exist");
+        
+        if (booking == null) 
+            throw new InvalidInputException(bookingId);
+
+        if (_reservationRepository.GetAll().Any(reservation1 => reservation1.Booking == bookingId))
+            throw new ElementExistsException(bookingId);
+        
         Reservation reservation = new()
         {
             Id = new UUIDKey(),
@@ -37,11 +44,11 @@ public class ReservationHandler(IEntityManager entityManager)
 
     public Reservation PayReservation(Reservation reservation, double price)
     {
-        if (!_reservationRepository.Contains(reservation)) throw new Exception("Invalid reservation");
+        if (!_reservationRepository.Contains(reservation)) throw new InvalidInputException(reservation.GetIdString());
 
         Booking? booking = _bookingRepository.Get(new Key(reservation.Booking));
         if (booking == null || Math.Abs(booking.Price - price) > .001)
-            throw new Exception("Price has to confirm with the price due");
+            throw new InvalidInputException(price.ToString(CultureInfo.InvariantCulture));
         
         reservation.PaidPrice = price;
         reservation.ReservationStatus = ReservationStatus.PAID;
@@ -52,12 +59,22 @@ public class ReservationHandler(IEntityManager entityManager)
 
     }
 
-    public bool CancelReservation(Booking booking)
+    public bool CancelReservation(string bookingId)
     {
-        var reservation = _reservationRepository.GetAll().First(reservation1 => reservation1.Booking == booking.GetIdString());
-        reservation.ReservationStatus = ReservationStatus.CANCELED;
-        // If there is a paid reservation, the customer should be refunded
-        // but this is not modeled here
-        return true;
+        try
+        {
+            var reservation = _reservationRepository.GetAll()
+                .First(reservation1 => reservation1.Booking == bookingId);
+            
+            // If there is a paid reservation, the customer should be refunded
+            // but this is not modeled here
+            
+            reservation.ReservationStatus = ReservationStatus.CANCELED;
+            return _reservationRepository.Update(reservation);
+        }
+        catch (InvalidOperationException)
+        {
+            throw new InvalidInputException(bookingId);
+        }
     }
 }
