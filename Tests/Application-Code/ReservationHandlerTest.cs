@@ -124,9 +124,28 @@ public class ReservationHandlerTest
         // Verify
         Mock.Verify(reservationRepoMock, bookingRepoMock, entityManagerMock);
     }
+    
+    [Test]
+    public void Test03_PayReservation_3()
+    {
+        var somePrice = 0;
+        var unpaidReservation = GenerateReservation("reservation-id");
+        
+        // Capture
+        reservationRepoMock
+            .Setup(repository => repository.Contains(unpaidReservation))
+            .Returns(false)
+            .Verifiable();
+        
+        // Act and Assert
+        Assert.Throws<InvalidInputException>(() => cut.PayReservation(unpaidReservation, somePrice));
+        
+        // Verify
+        Mock.Verify(reservationRepoMock, bookingRepoMock, entityManagerMock);
+    }
 
     [Test]
-    public void Test03_ReserveBooking()
+    public void Test04_ReserveBooking()
     {
         var bookingId = "booking-id";
         var booking = GenerateBooking(bookingId);
@@ -159,7 +178,7 @@ public class ReservationHandlerTest
     }
     
     [Test]
-    public void Test04_ReserveBooking_2()
+    public void Test05_ReserveBooking_2()
     {
         var bookingId = "booking-id";
 
@@ -177,7 +196,7 @@ public class ReservationHandlerTest
     }
     
     [Test]
-    public void Test05_ReserveBooking_3()
+    public void Test06_ReserveBooking_3()
     {
         var bookingId = "booking-id";
         var booking = GenerateBooking(bookingId);
@@ -202,7 +221,7 @@ public class ReservationHandlerTest
     }
     
     [Test]
-    public void Test06_CancelBooking()
+    public void Test07_CancelBooking()
     {
         var bookingId = "booking-id";
         var reservationId = "reservation-id";
@@ -227,7 +246,7 @@ public class ReservationHandlerTest
     }
     
     [Test]
-    public void Test07_CancelBooking_2()
+    public void Test08_CancelBooking_2()
     {
         var reservationId = "booking-id";
         
@@ -239,6 +258,90 @@ public class ReservationHandlerTest
 
         // Act & Assert
         Assert.Throws<InvalidInputException>(() => cut.CancelReservation(reservationId));
+        
+        // Verify
+        Mock.Verify(bookingRepoMock, reservationRepoMock);
+    }
+    
+    [Test]
+    public void Test09_GetAllReservations()
+    {
+        // Capture
+        reservationRepoMock
+            .Setup(repository => repository.GetAll())
+            .Returns(ImmutableList<Reservation>.Empty)
+            .Verifiable();
+
+        // Act & Assert
+        Assert.That(cut.GetAllReservations().Count, Is.EqualTo(0));
+        
+        // Verify
+        Mock.Verify(bookingRepoMock, reservationRepoMock);
+    }
+    
+    [Test]
+    public void Test10_GetAllReservations_2()
+    {
+        int numberOfReservations = 10;
+        IList<Reservation> reservations = new List<Reservation>();
+        for (var i = 0; i < numberOfReservations; i++)
+        {
+            reservations.Add(new Reservation()
+            {
+                Id = new NumberKey(i),
+            });
+        }
+        // Capture
+        reservationRepoMock
+            .Setup(repository => repository.GetAll())
+            .Returns(reservations.ToImmutableList())
+            .Verifiable();
+
+        // Act & Assert
+        Assert.That(cut.GetAllReservations().Count, Is.EqualTo(numberOfReservations));
+        
+        // Verify
+        Mock.Verify(bookingRepoMock, reservationRepoMock);
+    }
+    
+    [Test]
+    public void Test11_GetReservation()
+    {
+        int numberOfReservations = 10;
+        int reservationId = 5;
+        IList<Reservation> reservations = new List<Reservation>();
+        for (var i = 0; i < numberOfReservations; i++)
+        {
+            reservations.Add(new Reservation()
+            {
+                Id = new NumberKey(i),
+            });
+        }
+        // Capture
+        reservationRepoMock
+            .Setup(repository => repository.Get(new NumberKey(reservationId)))
+            .Returns(reservations[reservationId])
+            .Verifiable();
+
+        // Act & Assert
+        Assert.That(cut.GetReservation("" + reservationId), Is.EqualTo(reservations[reservationId]));
+        
+        // Verify
+        Mock.Verify(bookingRepoMock, reservationRepoMock);
+    }
+    
+    [Test]
+    public void Test12_GetReservation_2()
+    {
+        int reservationId = 11;
+        // Capture
+        reservationRepoMock
+            .Setup(repository => repository.Get(new NumberKey(reservationId)))
+            .Returns((Reservation) null)
+            .Verifiable();
+
+        // Act & Assert
+        Assert.That(cut.GetReservation("" + reservationId), Is.Null);
         
         // Verify
         Mock.Verify(bookingRepoMock, reservationRepoMock);
