@@ -17,7 +17,7 @@ public class FlightHandler(IEntityManager entityManager)
     {
         return _flightRepository.GetAll();
     }
-    public bool ScheduleFlight(string connectionId, string flightNumber, DateOnly flightDate, TimeOnly departureTime, TimeOnly arrivalTime, string planetype)
+    public Flight ScheduleFlight(string connectionId, string flightNumber, DateOnly flightDate, TimeOnly departureTime, TimeOnly arrivalTime, string planetype)
     {
         Flight flight = new Flight()
         {
@@ -29,7 +29,7 @@ public class FlightHandler(IEntityManager entityManager)
             PlaneType = planetype
         };
         _flightRepository.Add(flight);
-        return true;
+        return flight;
     }
     
     public bool CancelFlight(string connectionId, string flightNumber)

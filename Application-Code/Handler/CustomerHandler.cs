@@ -7,7 +7,7 @@ public class CustomerHandler(IEntityManager entityManager)
 {
     private readonly IRepository<Customer> _customerRepository = entityManager.GetRepository<Customer>();
 
-    public bool CreateCustomer(string firstname, string lastname, string passportNumber)
+    public Customer CreateCustomer(string firstname, string lastname, string passportNumber)
     {
         Customer c = new Customer()
         {
@@ -17,7 +17,7 @@ public class CustomerHandler(IEntityManager entityManager)
             PassportNumber = passportNumber
         };
         _customerRepository.Add(c);
-        return true;
+        return c;
     }
     
     public bool DeleteCustomer(string id)

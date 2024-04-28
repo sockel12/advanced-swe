@@ -8,7 +8,7 @@ public class AirportHandler(IEntityManager entityManager)
 {
     private readonly IRepository<Airport> _airportRepository = entityManager.GetRepository<Airport>();
     
-    public bool CreateAirport(string airportCode, string name, string city, string country, string timezone)
+    public Airport CreateAirport(string airportCode, string name, string city, string country, string timezone)
     {
         Airport airport = new Airport()
         {
@@ -19,7 +19,7 @@ public class AirportHandler(IEntityManager entityManager)
             Timezone = timezone
         };
         _airportRepository.Add(airport);
-        return true;
+        return airport;
     }
 
     public bool DeleteAirport(string id)

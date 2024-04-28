@@ -7,14 +7,7 @@ public class ConnectionHandler(IEntityManager entityManager)
 {
     private readonly IRepository<Connection> _connectionRepository = entityManager.GetRepository<Connection>();
     
-    public Key Id { get; set; }
-    public string AirportFrom { get; set; }
-    public string AirportTo { get; set; }
-    public double FlightDuration { get; set; }
-    public double Distance { get; set; }
-    public DistanceUnit DistanceUnit { get; set; }
-    
-    public bool CreateConnection(string id, string airportFrom, string airportTo, double flightDuration, double distance, DistanceUnit distanceUnit)
+    public Connection CreateConnection(string id, string airportFrom, string airportTo, double flightDuration, double distance, DistanceUnit distanceUnit)
     {
         Connection connection = new Connection()
         {
@@ -26,7 +19,7 @@ public class ConnectionHandler(IEntityManager entityManager)
             DistanceUnit = distanceUnit
         };
         _connectionRepository.Add(connection);
-        return true;
+        return connection;
     }
     
     public bool DeleteConnection(string id)

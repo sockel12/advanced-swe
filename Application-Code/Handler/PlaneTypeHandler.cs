@@ -18,7 +18,7 @@ public class PlaneTypeHandler(IEntityManager entityManager)
         return _planeTypeRepository.Get(new Key(id));
     }
     
-    public void CreatePlaneType(string id, uint capacity, uint maxRange)
+    public PlaneType CreatePlaneType(string id, uint capacity, uint maxRange)
     {
         PlaneType planeType = new PlaneType()
         {
@@ -27,6 +27,7 @@ public class PlaneTypeHandler(IEntityManager entityManager)
             MaxRange = maxRange
         };
         _planeTypeRepository.Add(planeType);
+        return planeType;
     }
 
     public bool UpdatePlaneType(string id, uint capacity, uint maxRange)

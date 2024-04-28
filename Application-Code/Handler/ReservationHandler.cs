@@ -1,6 +1,7 @@
 using System.Globalization;
 using Application_Code.Interfaces;
 using Domain_Code;
+using Domain_Code.Management;
 
 namespace Application_Code.Handler;
 
@@ -9,9 +10,9 @@ public class ReservationHandler(IEntityManager entityManager)
     private readonly IRepository<Reservation> _reservationRepository = entityManager.GetRepository<Reservation>();
     private readonly IRepository<Booking> _bookingRepository = entityManager.GetRepository<Booking>();
 
-    public IList<Reservation> GetAllReservations()
+    public Reservation[] GetAllReservations()
     {
-        return _reservationRepository.GetAll();
+        return _reservationRepository.GetAll().ToArray();
     }
 
     public Reservation? GetReservation(string id)

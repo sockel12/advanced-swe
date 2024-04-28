@@ -7,7 +7,7 @@ public class CountryHandler(IEntityManager entityManager)
 {
     private readonly IRepository<Country> _countryRepository = entityManager.GetRepository<Country>();
     
-    public void CreateCountry(string coutryId, string name)
+    public Country CreateCountry(string coutryId, string name)
     {
         Country country = new Country()
         {
@@ -15,6 +15,7 @@ public class CountryHandler(IEntityManager entityManager)
             Name = name,
         };
         _countryRepository.Add(country);
+        return country;
     }
     
     public void RemoveCountry(string countryId)
