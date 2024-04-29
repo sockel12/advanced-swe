@@ -16,5 +16,7 @@ public class Program
             PassportNumber = "000000000"
         };
         repo.Add(c);
+
+        repo.GetAll();
     }
 }

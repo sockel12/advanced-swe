@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <InvariantGlobalization>true</InvariantGlobalization>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <OutputType>Library</OutputType>
     </PropertyGroup>
 
     <ItemGroup>
@@ -22,7 +23,6 @@
     <ItemGroup>
       <ProjectReference Include="..\Application-Repositories\Application-Repositories.csproj" />
       <ProjectReference Include="..\Adapter-Store-CSV\Adapter-Store-CSV.csproj" />
-      <ProjectReference Include="..\Adapter-Store\Adapter-Store.csproj" />
       <ProjectReference Include="..\Application-Code\Application-Code.csproj" />
     </ItemGroup>
 </Project>

@@ -2,17 +2,17 @@ version: '3.1'
 
 services:
 
-    db-1:
-        image: postgres
-        restart: always
-        environment:
-            POSTGRES_USER: test
-            POSTGRES_PASSWORD: password
-            POSTGRES_DB: TestDB
-        volumes:
-            - ./db/postgres:/var/lib/postgresql/data
-        ports:
-            - 5432:5432
+#    db-1:
+#        image: postgres
+#        restart: always
+#        environment:
+#            POSTGRES_USER: test
+#            POSTGRES_PASSWORD: password
+#            POSTGRES_DB: TestDB
+#        volumes:
+#            - ./db/postgres:/var/lib/postgresql/data
+#        ports:
+#            - 5432:5432
 
     db-2:
       image: mysql
@@ -27,13 +27,13 @@ services:
       volumes:
         - ./db/mysql:/var/lib/mysql
 
-    db-3: 
-      image: mongo
-      restart: always
-      environment:
-        MONGO_INITDB_ROOT_USERNAME: root
-        MONGO_INITDB_ROOT_PASSWORD: password
-      ports:
-        - 27017:27017
-      volumes:
-        - ./db/mongo:/data/db
+#    db-3: 
+#      image: mongo
+#      restart: always
+#      environment:
+#        MONGO_INITDB_ROOT_USERNAME: root
+#        MONGO_INITDB_ROOT_PASSWORD: password
+#      ports:
+#        - 27017:27017
+#      volumes:
+#        - ./db/mongo:/data/db

@@ -15,7 +15,8 @@ public static class MockDataGenerator
     private static IRepository<Flight> _repoFlight;
     private static IRepository<Booking> _repoBookings;
     private static IRepository<Carrier> _repoCarriers;
-    
+    private static IRepository<DistanceUnit> _distanceClass;
+    private static IRepository<FlightClass> _flightClass;
     
     public static void CreateMockData()
     {
@@ -26,26 +27,32 @@ public static class MockDataGenerator
         _repoFlight = _factory.GetRepository<Flight>();
         _repoBookings = _factory.GetRepository<Booking>();
         _repoCarriers = _factory.GetRepository<Carrier>();
+        _distanceClass = _factory.GetRepository<DistanceUnit>();
+        _flightClass = _factory.GetRepository<FlightClass>();
         
+        CreateUnits();
+        CreateFlightClasses();
         CreateMockCustomers();
         CreateMockCountries();
         CreateMockAirports();
         CreateMockConnections();
         CreateCarriers();
+        CreateFlights();
+        CreateBookings();
     }
     
     private static void CreateMockCustomers()
     {
         Customer c1 = new Customer()
         {
-            Id = new Key("1"),
+            Id = new NumberKey(1),
             FirstName = "Niklas",
             LastName = "Haas",
             PassportNumber = "000000000"
         };
         Customer c2 = new Customer()
         {
-            Id = new Key("2"),
+            Id = new NumberKey(2),
             FirstName = "Benjamin",
             LastName = "Appel",
             PassportNumber = "111111111"
@@ -58,15 +65,13 @@ public static class MockDataGenerator
         
         Country germany = new Country()
         {
-            Id = new Key("DE"),
+            Code = new Key("DE"),
             Name = "Germany",
-            Code = "DE"
         };
         Country usa = new Country()
         {
-            Id = new Key("US"),
+            Code = new Key("US"),
             Name = "United States of America",
-            Code = "US"
         };
         _repoCountry.Add(germany, usa);
     }
@@ -103,7 +108,7 @@ public static class MockDataGenerator
             AirportTo = "LAX",
             FlightDuration = 1275,
             Distance = 9090,
-            DistanceUnit = DistanceUnit.KM,
+            DistanceUnit = "KM",
         };
         Connection conn2 = new Connection()
         {
@@ -112,7 +117,7 @@ public static class MockDataGenerator
             AirportTo = "FRA",
             FlightDuration = 1275,
             Distance = 9090,
-            DistanceUnit = DistanceUnit.KM,
+            DistanceUnit = "KM",
         };
         _repoConnection.Add(conn1, conn2);
     }
@@ -134,5 +139,88 @@ public static class MockDataGenerator
             Website = "aa.com"
         };
         _repoCarriers.Add(c1, c2);
+    }
+
+    private static void CreateFlights()
+    {
+        Flight f1 = new Flight()
+        {
+            FlightNumber = new Key("LH456-01"),
+            Connection = "LH456",
+            PlaneType = "A747",
+            FlightDate = DateOnly.FromDayNumber(200000),
+            DepartureTime = TimeOnly.Parse("12:00"),
+            ArrivalTime = TimeOnly.Parse("21:00")
+        };
+        Flight f2 = new Flight()
+        {
+            FlightNumber = new Key("LH457-01"),
+            Connection = "LH457",
+            PlaneType = "A747",
+            FlightDate = DateOnly.FromDayNumber(210000),
+            DepartureTime = TimeOnly.Parse("11:00"),
+            ArrivalTime = TimeOnly.Parse("01:00")
+        };
+        _repoFlight.Add(f1, f2);
+    }
+    
+    private static void CreateUnits()
+    {
+        DistanceUnit km = new DistanceUnit()
+        {
+            Unit = new Key("KM"),
+            Name = "Kilometer"
+        };
+        DistanceUnit mi = new DistanceUnit()
+        {
+            Unit = new Key("MI"),
+            Name = "Miles"
+        };
+        _distanceClass.Add(km, mi);
+    }
+    
+    private static void CreateFlightClasses()
+    {
+        FlightClass economy = new FlightClass()
+        {
+            FClass = new Key("ECO"),
+            Name = "Economy"
+        };
+        FlightClass business = new FlightClass()
+        {
+            FClass = new Key("BUS"),
+            Name = "Business"
+        };
+        FlightClass first = new FlightClass()
+        {
+            FClass = new Key("FIR"),
+            Name = "First Class"
+        };
+        _flightClass.Add(economy, business, first);
+    }
+
+    private static void CreateBookings()
+    {
+        Booking b1 = new Booking()
+        {
+            BookingNumber = new NumberKey(1),
+            Customer = "1",
+            Flight = "LH456-01",
+            BookingDate = DateTime.Now,
+            FlightClass = "BUS",
+            Price = 845.99,
+            LuggageCount = 1
+        };
+        Booking b2 = new Booking()
+        {
+            BookingNumber = new NumberKey(1),
+            Customer = "2",
+            Flight = "LH456-01",
+            BookingDate = DateTime.Now,
+            FlightClass = "BUS",
+            Price = 1225.00,
+            LuggageCount = 1
+        };
+        _repoBookings.Add(b1, b2);
     }
 }

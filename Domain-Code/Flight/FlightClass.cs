@@ -1,7 +1,12 @@
 namespace Domain_Code;
 
-public enum FlightClass
+public class FlightClass : Identifiable
 {
-    Business,
-    FirstClass
+    public Key FClass { get; set; }
+    public string Name { get; set; }
+
+    public override Key GetId()
+    {
+        return FClass;
+    }
 }

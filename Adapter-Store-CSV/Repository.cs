@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.Reflection;
-using Adapter_Repositories;
-using Adapter_Store_CSV.DTO;
+using System.Text;
 using Application_Code.Interfaces;
-using AutoMapper;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Domain_Code;
@@ -69,17 +67,12 @@ public class Repository<T> : IRepository<T>
     }
     
     #endregion ICollection
-    
-    // private static string BaseDir => @"/Users/I550939/Documents/Code/SWE/Adapter-Store-CSV/data";
-    // Get the directory of the executing assembly
     private static string BaseDir => Path.Join(
         Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", "..", "..", "..", "Adapter-Store-CSV", "data") ?? "";
     private string DataCsvFile { get; }
     private HashSet<T> Records { get; } = new();
-    private readonly IConverter _converter;
-    public Repository(IConverter converter)
+    public Repository()
     {
-        _converter = converter;
         var className = typeof(T).Name;
 
         if (BaseDir == "")
@@ -103,7 +96,9 @@ public class Repository<T> : IRepository<T>
     private CsvConfiguration DefaultConfig { get; } = new(CultureInfo.InvariantCulture)
     {
         NewLine = Environment.NewLine,
-        Delimiter = ";"
+        Delimiter = ";",
+        Encoding = Encoding.UTF8,
+        PrepareHeaderForMatch = args => args.Header.ToLower()
     };
     private void LoadCsv()
     {
@@ -111,20 +106,23 @@ public class Repository<T> : IRepository<T>
         {
             using var streamReader = new StreamReader(DataCsvFile);
             using var reader = new CsvReader(streamReader, DefaultConfig);
+
+            reader.Read();
+            reader.ReadHeader();
             
             Records.Clear();
-            foreach (IDTO record in reader.GetRecords(_converter.GetIdtoType()))
+            foreach (T record in reader.GetRecords<T>())
             {
-                this.Add(
-                    (T)_converter.ToDomain(record)
-                );
+                Records.Add(record);
             }
-
-            Count = Records.Count;
         }
         catch (Exception e)
         {
             Console.WriteLine("Failed to load csv file: '" + DataCsvFile + "':\n" + e.Message);
+        }
+        finally
+        {
+            Count = Records.Count;
         }
     }
 
@@ -134,15 +132,14 @@ public class Repository<T> : IRepository<T>
         using var writer = new CsvWriter(streamWriter, DefaultConfig);
         // Create the header for the csv file and make an empty record so that the 
         // next record is in the 2nd line
-        writer.WriteHeader(_converter.GetIdtoType());
+        writer.WriteHeader<T>();
         writer.NextRecord();
         
         foreach (var record in Records)
         {
             try
             {
-                var idto = _converter.FromDomain(record);
-                writer.WriteRecord( Convert.ChangeType(idto, _converter.GetIdtoType()) );
+                writer.WriteRecord(record);
                 writer.NextRecord();
             }
             catch (Exception e)
@@ -161,6 +158,14 @@ public class Repository<T> : IRepository<T>
         return isSuccess;
     }
 
+    public bool Delete(Key key)
+    {
+        var item = Records.First(identifiable => identifiable.GetId() == key);
+        var isSuccess = Records.Remove(item);
+        WriteCsv();
+        return isSuccess;
+    }
+
     public ImmutableList<T> GetAll()
     {
         return Records.ToImmutableList();
@@ -168,6 +173,6 @@ public class Repository<T> : IRepository<T>
 
     public T? Get(Key key)
     {
-        return Records.First(identifiable => identifiable.GetId() == key);
+        return Records.FirstOrDefault(identifiable => identifiable.GetId() == key);
     }
 }

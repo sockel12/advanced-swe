@@ -5,14 +5,14 @@ namespace Adapter_Repositories;
 
 public class EntityManager : IEntityManager
 {
-    private readonly List<IRepositoryFactory> _factoriesFactories = new();
+    private readonly List<IRepositoryFactory> _repositoryFactories = new();
     public void RegisterRepositoryFactory(IRepositoryFactory factory)
     {
-        _factoriesFactories.Add(factory);
+        _repositoryFactories.Add(factory);
     }
     public void UnregisterRepositoryFactory(IRepositoryFactory factory)
     {
-        _factoriesFactories.Remove(factory);
+        _repositoryFactories.Remove(factory);
     }
     
     
@@ -20,7 +20,7 @@ public class EntityManager : IEntityManager
         where T : Identifiable
     {
         return new Repository<T>(
-            _factoriesFactories
+            _repositoryFactories
                 .Where(factory => factory.HasRecords<T>())
                 .Select(factory => factory.GetRepository<T>())
         );

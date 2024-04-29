@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Adapter-Administration\Adapter-Administration.csproj" />
+      <ProjectReference Include="..\Adapter-Store-CSV\Adapter-Store-CSV.csproj" />
+      <ProjectReference Include="..\Application-Code\Application-Code.csproj" />
+      <ProjectReference Include="..\Application-Repositories\Application-Repositories.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Properties\launchSettings.json">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </None>
+    </ItemGroup>
+
+</Project>

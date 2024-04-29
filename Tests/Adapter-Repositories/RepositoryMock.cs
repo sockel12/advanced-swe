@@ -66,6 +66,11 @@ namespace Tests.Adapter_Repositories
         {
             throw new NotImplementedException();
         }
+        
+        public bool Delete(Key key)
+        {
+            throw new NotImplementedException();
+        }
 
         IEnumerator IEnumerable.GetEnumerator()
         {

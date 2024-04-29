@@ -28,7 +28,7 @@ public class Repository<T>(IEnumerable<IRepository<T>> Repositories) : IReposito
     #region ICollection
     public void Add(T item)
     {
-        throw new NotImplementedException();
+        Repositories.First().Add(item);
     }
     
     public void Add(params T[] items)
@@ -68,6 +68,11 @@ public class Repository<T>(IEnumerable<IRepository<T>> Repositories) : IReposito
 
     public T? Get(Key key)
     {
-        return Repositories.First(repository => repository.Get(key) != null).Get(key);
+        return Repositories.FirstOrDefault(repository => repository.Get(key) != null)?.Get(key);
+    }
+    
+    public bool Delete(Key key)
+    {
+        return Repositories.Any(repository => repository.Delete(key));
     }
 }
