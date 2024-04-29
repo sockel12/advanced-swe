@@ -20,7 +20,7 @@ public class BookingHandler(IEntityManager entityManager)
     public Booking CreateBooking(
         string customerId,
         string flightNumber,
-        FlightClass flightClass,
+        string flightClass,
         int luggageCount,
         int price,
         DateTime bookingDate)

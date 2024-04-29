@@ -7,7 +7,7 @@ public class Connection : Identifiable
     public string AirportTo { get; set; }
     public double FlightDuration { get; set; }
     public double Distance { get; set; }
-    public DistanceUnit DistanceUnit { get; set; }
+    public string DistanceUnit { get; set; }
     
     public override Key GetId()
     {

@@ -1,7 +1,11 @@
 namespace Domain_Code;
 
-public enum DistanceUnit
+public class DistanceUnit : Identifiable
 {
-    KM,
-    FOOT
+    public Key Unit { get; set; }
+    public string Name { get; set; }
+    public override Key GetId()
+    {
+        return Unit;
+    }
 }
