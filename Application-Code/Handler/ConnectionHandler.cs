@@ -3,11 +3,9 @@ using Domain_Code;
 
 namespace Application_Code.Handler;
 
-public class ConnectionHandler(IEntityManager entityManager)
+public class ConnectionHandler(IEntityManager entityManager) : BaseHandler<Connection>(entityManager)
 {
-    private readonly IRepository<Connection> _connectionRepository = entityManager.GetRepository<Connection>();
-    
-    public Connection CreateConnection(string id, string airportFrom, string airportTo, double flightDuration, double distance, string distanceUnit)
+    public Connection CreateConnection(string id, string airportFrom, string airportTo, double flightDuration, double distance, DistanceUnit distanceUnit)
     {
         Connection connection = new Connection()
         {
@@ -18,35 +16,20 @@ public class ConnectionHandler(IEntityManager entityManager)
             Distance = distance,
             DistanceUnit = distanceUnit
         };
-        _connectionRepository.Add(connection);
+        Repository.Add(connection);
         return connection;
-    }
-    
-    public bool DeleteConnection(string id)
-    {
-        return _connectionRepository.Delete(new Key(id));
     }
 
     public bool UpdateConnection(string id, string airportFrom, string airportTo, double flightDuration,
-        double distance, string distanceUnit)
+        double distance, DistanceUnit distanceUnit)
     {
-        Connection? connection = _connectionRepository.Get(new Key(id));
+        Connection? connection = Repository.Get(new Key(id));
         if (connection is null) return false;
         connection.AirportFrom = airportFrom;
         connection.AirportTo = airportTo;
         connection.FlightDuration = flightDuration;
         connection.Distance = distance;
         connection.DistanceUnit = distanceUnit;
-        return _connectionRepository.Update(connection);
-    }
-    
-    public Connection GetConnection(string id)
-    {
-        return _connectionRepository.Get(new Key(id))!;
-    }
-    
-    public Connection[] GetAllConnections()
-    {
-        return _connectionRepository.GetAll().ToArray();
+        return Repository.Update(connection);
     }
 }

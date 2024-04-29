@@ -15,3 +15,5 @@ public abstract class HandlerException : Exception
 public class InvalidInputException(string input) : HandlerException("Invalid Input " + input);
 
 public class ElementExistsException(string id) : HandlerException("Element already exists with id: " + id);
+
+public class InvalidMethodException(string methodName) : HandlerException("Invalid method: " + methodName);

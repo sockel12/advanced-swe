@@ -5,20 +5,9 @@ using Domain_Code.Management;
 
 namespace Application_Code.Handler;
 
-public class ReservationHandler(IEntityManager entityManager)
+public class ReservationHandler(IEntityManager entityManager) : BaseHandler<Reservation>(entityManager)
 {
-    private readonly IRepository<Reservation> _reservationRepository = entityManager.GetRepository<Reservation>();
     private readonly IRepository<Booking> _bookingRepository = entityManager.GetRepository<Booking>();
-
-    public Reservation[] GetAllReservations()
-    {
-        return _reservationRepository.GetAll().ToArray();
-    }
-
-    public Reservation? GetReservation(string id)
-    {
-        return _reservationRepository.Get(new Key(id));
-    }
     
     public Reservation ReserveBooking(string bookingId)
     {
@@ -27,7 +16,7 @@ public class ReservationHandler(IEntityManager entityManager)
         if (booking == null) 
             throw new InvalidInputException(bookingId);
 
-        if (_reservationRepository.GetAll().Any(reservation1 => reservation1.Booking == bookingId))
+        if (Repository.GetAll().Any(reservation1 => reservation1.Booking == bookingId))
             throw new ElementExistsException(bookingId);
         
         Reservation reservation = new()
@@ -39,13 +28,13 @@ public class ReservationHandler(IEntityManager entityManager)
             ReservationStatus = ReservationStatus.RESERVED,
             ReservationDate = DateTime.Today
         };
-        _reservationRepository.Add(reservation);
+        Repository.Add(reservation);
         return reservation;
     }
 
     public Reservation PayReservation(Reservation reservation, double price)
     {
-        if (!_reservationRepository.Contains(reservation)) throw new InvalidInputException(reservation.GetIdString());
+        if (!Repository.Contains(reservation)) throw new InvalidInputException(reservation.GetIdString());
 
         Booking? booking = _bookingRepository.Get(new Key(reservation.Booking));
         if (booking == null || Math.Abs(booking.Price - price) > .001)
@@ -54,7 +43,7 @@ public class ReservationHandler(IEntityManager entityManager)
         reservation.PaidPrice = price;
         reservation.ReservationStatus = ReservationStatus.PAID;
         
-        _reservationRepository.Update(reservation);
+        Repository.Update(reservation);
         
         return reservation;
 
@@ -64,18 +53,23 @@ public class ReservationHandler(IEntityManager entityManager)
     {
         try
         {
-            var reservation = _reservationRepository.GetAll()
+            var reservation = Repository.GetAll()
                 .First(reservation1 => reservation1.Booking == bookingId);
             
             // If there is a paid reservation, the customer should be refunded
             // but this is not modeled here
             
             reservation.ReservationStatus = ReservationStatus.CANCELED;
-            return _reservationRepository.Update(reservation);
+            return Repository.Update(reservation);
         }
         catch (InvalidOperationException)
         {
             throw new InvalidInputException(bookingId);
         }
+    }
+
+    public override bool Delete(string id)
+    {
+        throw new InvalidMethodException("Delete");
     }
 }

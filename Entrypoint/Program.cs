@@ -26,51 +26,51 @@ public class Program
         FlightHandler flightHandler = new(entityManager);
         
         IEnumerable<Route> reservationRoutes = new RouteBuilder("reservation")
-            .Get(reservationHandler.GetAllReservations)
-            .Get("{id}", reservationHandler.GetReservation)
+            .Get(reservationHandler.GetAll)
+            .Get("{id}", reservationHandler.Get)
             .Post("pay", reservationHandler.PayReservation)
             .Post("cancel", reservationHandler.CancelReservation)
             .Post("reserve", reservationHandler.ReserveBooking)
             .Build();
         
         IEnumerable<Route> planetypeRoutes = new RouteBuilder("planetype")
-            .Get(planeTypeHandler.GetPlaneTypes)
-            .Get("{id}", planeTypeHandler.GetPlaneType)
+            .Get(planeTypeHandler.GetAll)
+            .Get("{id}", planeTypeHandler.Get)
             .Post(planeTypeHandler.CreatePlaneType)
             .Put( planeTypeHandler.UpdatePlaneType)
-            .Delete( planeTypeHandler.DeletePlaneType)
+            .Delete( planeTypeHandler.Delete)
             .Build();
         
         IEnumerable<Route> airportRoutes = new RouteBuilder("airport")
-            .Get(airportHandler.GetAllAirports)
-            .Get("{id}", airportHandler.GetAirport)
+            .Get(airportHandler.GetAll)
+            .Get("{id}", airportHandler.Get)
             .Post(airportHandler.CreateAirport)
             .Put( airportHandler.UpdateAirport)
-            .Delete( airportHandler.DeleteAirport)
+            .Delete( airportHandler.Delete)
             .Build();
         
         IEnumerable<Route> countryRoutes = new RouteBuilder("country")
-            .Get(countryHandler.GetAllCountries)
-            .Get("{id}", countryHandler.GetCountry)
+            .Get(countryHandler.GetAll)
+            .Get("{id}", countryHandler.Get)
             .Post(countryHandler.CreateCountry)
             .Put( countryHandler.UpdateCountry)
-            .Delete( countryHandler.RemoveCountry)
+            .Delete( countryHandler.Delete)
             .Build();
         
         IEnumerable<Route> connectionRoutes = new RouteBuilder("connection")
-            .Get(connectionHandler.GetAllConnections)
-            .Get("{id}", connectionHandler.GetConnection)
+            .Get(connectionHandler.GetAll)
+            .Get("{id}", connectionHandler.Get)
             .Post(connectionHandler.CreateConnection)
             .Put( connectionHandler.UpdateConnection)
-            .Delete( connectionHandler.DeleteConnection)
+            .Delete( connectionHandler.Delete)
             .Build();
         
         IEnumerable<Route> customerRoutes = new RouteBuilder("customer")
-            .Get(customerHandler.GetAllCustomers)
-            .Get("{id}", customerHandler.GetCustomer)
+            .Get(customerHandler.GetAll)
+            .Get("{id}", customerHandler.Get)
             .Post(customerHandler.CreateCustomer)
             .Put( customerHandler.UpdateCustomer)
-            .Delete( customerHandler.DeleteCustomer)
+            .Delete( customerHandler.Delete)
             .Build();
 
         IEnumerable<Route> bookingRoutes = new RouteBuilder("booking")
@@ -80,8 +80,8 @@ public class Program
             .Build();
 
         IEnumerable<Route> flightRoutes = new RouteBuilder("flight")
-            .Get(flightHandler.GetAllFlights)
-            .Get("{id}", flightHandler.GetFlight)
+            .Get(flightHandler.GetAll)
+            .Get("{id}", flightHandler.Get)
             .Post(flightHandler.ScheduleFlight)
             .Delete(flightHandler.CancelFlight)
             .Build();

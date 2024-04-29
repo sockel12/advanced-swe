@@ -3,19 +3,8 @@ using Domain_Code;
 
 namespace Application_Code.Handler;
 
-public class BookingHandler(IEntityManager entityManager)
+public class BookingHandler(IEntityManager entityManager) : BaseHandler<Booking>(entityManager)
 {
-    private readonly IRepository<Booking> _bookingRepository = entityManager.GetRepository<Booking>();
-
-    public Booking? Get(string id)
-    {
-        return _bookingRepository.Get(new Key(id));
-    }
-
-    public IList<Booking> GetAll()
-    {
-        return _bookingRepository.GetAll();
-    }
 
     public Booking CreateBooking(
         string customerId,
@@ -35,7 +24,7 @@ public class BookingHandler(IEntityManager entityManager)
             BookingDate = bookingDate,
             LuggageCount = luggageCount,
         };
-        _bookingRepository.Add(booking);
+        Repository.Add(booking);
         return booking;
     }
 }
