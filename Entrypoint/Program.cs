@@ -29,7 +29,7 @@ public class Program
             .Get(reservationHandler.GetAll)
             .Get("{id}", reservationHandler.Get)
             .Post("pay", reservationHandler.PayReservation)
-            .Post("cancel", reservationHandler.CancelReservation)
+            .Delete(reservationHandler.Delete)
             .Post("reserve", reservationHandler.ReserveBooking)
             .Build();
         

@@ -5,7 +5,7 @@ namespace Application_Code.Handler;
 
 public class ConnectionHandler(IEntityManager entityManager) : BaseHandler<Connection>(entityManager)
 {
-    public Connection CreateConnection(string id, string airportFrom, string airportTo, double flightDuration, double distance, DistanceUnit distanceUnit)
+    public Connection CreateConnection(string id, string airportFrom, string airportTo, double flightDuration, double distance, string distanceUnit)
     {
         Connection connection = new Connection()
         {
@@ -21,7 +21,7 @@ public class ConnectionHandler(IEntityManager entityManager) : BaseHandler<Conne
     }
 
     public bool UpdateConnection(string id, string airportFrom, string airportTo, double flightDuration,
-        double distance, DistanceUnit distanceUnit)
+        double distance, string distanceUnit)
     {
         Connection? connection = Repository.Get(new Key(id));
         if (connection is null) return false;
