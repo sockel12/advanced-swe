@@ -49,12 +49,12 @@ public class ReservationHandler(IEntityManager entityManager) : BaseHandler<Rese
 
     }
 
-    public bool CancelReservation(string bookingId)
+    public override bool Delete(string id)
     {
         try
         {
             var reservation = Repository.GetAll()
-                .First(reservation1 => reservation1.Booking == bookingId);
+                .First(reservation1 => reservation1.Booking == id);
             
             // If there is a paid reservation, the customer should be refunded
             // but this is not modeled here
@@ -64,12 +64,7 @@ public class ReservationHandler(IEntityManager entityManager) : BaseHandler<Rese
         }
         catch (InvalidOperationException)
         {
-            throw new InvalidInputException(bookingId);
+            throw new InvalidInputException(id);
         }
-    }
-
-    public override bool Delete(string id)
-    {
-        throw new InvalidMethodException("Delete");
     }
 }

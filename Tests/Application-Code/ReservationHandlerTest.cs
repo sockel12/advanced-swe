@@ -239,7 +239,7 @@ public class ReservationHandlerTest
             .Verifiable();
 
         // Act
-        cut.CancelReservation(bookingId);
+        cut.Delete(bookingId);
         
         // Assert & Verify
         Mock.Verify(bookingRepoMock, reservationRepoMock);
@@ -257,7 +257,7 @@ public class ReservationHandlerTest
             .Verifiable();
 
         // Act & Assert
-        Assert.Throws<InvalidInputException>(() => cut.CancelReservation(reservationId));
+        Assert.Throws<InvalidInputException>(() => cut.Delete(reservationId));
         
         // Verify
         Mock.Verify(bookingRepoMock, reservationRepoMock);

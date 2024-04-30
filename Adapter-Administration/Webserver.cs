@@ -19,7 +19,10 @@ public class Webserver
         var builder = WebApplication.CreateBuilder();
         
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(options =>
+        {
+            options.DocumentFilter<SwaggerPathModifier>();
+        });
         app = builder.Build();
 
         // Configure the HTTP request pipeline.
