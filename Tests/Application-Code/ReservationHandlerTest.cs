@@ -273,7 +273,7 @@ public class ReservationHandlerTest
             .Verifiable();
 
         // Act & Assert
-        Assert.That(cut.GetAllReservations().Count, Is.EqualTo(0));
+        Assert.That(cut.GetAll().Count, Is.EqualTo(0));
         
         // Verify
         Mock.Verify(bookingRepoMock, reservationRepoMock);
@@ -298,7 +298,7 @@ public class ReservationHandlerTest
             .Verifiable();
 
         // Act & Assert
-        Assert.That(cut.GetAllReservations().Count, Is.EqualTo(numberOfReservations));
+        Assert.That(cut.GetAll().Count, Is.EqualTo(numberOfReservations));
         
         // Verify
         Mock.Verify(bookingRepoMock, reservationRepoMock);
@@ -324,7 +324,7 @@ public class ReservationHandlerTest
             .Verifiable();
 
         // Act & Assert
-        Assert.That(cut.GetReservation("" + reservationId), Is.EqualTo(reservations[reservationId]));
+        Assert.That(cut.Get("" + reservationId), Is.EqualTo(reservations[reservationId]));
         
         // Verify
         Mock.Verify(bookingRepoMock, reservationRepoMock);
@@ -341,7 +341,7 @@ public class ReservationHandlerTest
             .Verifiable();
 
         // Act & Assert
-        Assert.That(cut.GetReservation("" + reservationId), Is.Null);
+        Assert.That(cut.Get("" + reservationId), Is.Null);
         
         // Verify
         Mock.Verify(bookingRepoMock, reservationRepoMock);
